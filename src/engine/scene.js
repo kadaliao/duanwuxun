@@ -30,8 +30,8 @@ const WaterShader = {
       vec3 wc = mix(uColor, uColor2, depth);
       vec3 col = mix(bg * (0.95 - depth * 0.3), wc, 0.3 + depth * 0.5);
       // 流动的亮纹
-      float streak = pow(noise(p*3.0 + vec2(uTime*0.25*uFlow, uTime*0.5)), 6.0);
-      col += streak * 0.10 * (1.0 - uNight*0.6);
+      float streak = pow(noise(vec2(p.x * 2.0, p.y * 14.0) + vec2(uTime*0.15*uFlow, uTime*0.6)), 5.0);
+      col += streak * (0.09 - 0.075 * uNight) * (0.4 + 0.6 * depth);
       // 岸边泡沫
       float foam = smoothstep(0.035, 0.0, d) * (0.3 + 0.7 * noise(p*8.0 + uTime*0.7));
       col = mix(col, vec3(0.45,0.42,0.36), foam * 0.5);
@@ -40,9 +40,9 @@ const WaterShader = {
         vec2 rp = vUv * uSize * 0.03; vec2 cell = floor(rp); vec2 f = fract(rp) - 0.5;
         float t = fract(uTime * 0.8 + hash(cell)); float r = length(f + (vec2(hash(cell+1.3), hash(cell+2.7)) - 0.5) * 0.6);
         float ring = smoothstep(0.03, 0.0, abs(r - t * 0.45)) * (1.0 - t) * step(0.4, hash(cell + 9.1)) * uRain;
-        col += ring * 0.12;
+        col += ring * (0.10 - 0.06 * uNight);
       }
-      col += vec3(0.10, 0.11, 0.13) * uNight * (0.35 + 0.65 * noise(p * 2.0 + vec2(uTime * 0.3, -uTime * 0.2))) * (0.5 + 0.5 * depth);
+      col += vec3(0.035, 0.04, 0.05) * uNight * (0.3 + 0.7 * noise(p * 2.0 + vec2(uTime * 0.3, -uTime * 0.2))) * (0.5 + 0.5 * depth);
       float a = smoothstep(0.0, 0.015, d) * (0.82 + depth * 0.18);
       gl_FragColor = vec4(col, a);
     }`,

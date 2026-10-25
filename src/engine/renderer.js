@@ -29,7 +29,7 @@ const GradeShader = {
       if (uFog > 0.001) {
         vec2 wp = (uView.xy + vUv * uView.zw) * 0.0022;
         float f = noise(wp + vec2(uTime*0.02, uTime*0.008)) * 0.6 + noise(wp*2.3 - vec2(uTime*0.03, 0.)) * 0.4;
-        f = smoothstep(0.35, 0.8, f) * uFog;
+        f = smoothstep(0.35, 0.8, f) * uFog * (1.0 - 0.45 * uNight);
         col = mix(col, uFogColor * mix(1.0, 0.35, uNight), f * 0.55);
       }
       gl_FragColor = vec4(col, 1.0);

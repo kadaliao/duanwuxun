@@ -163,7 +163,7 @@ export async function night(d) {
   // ── 船 ──
   const boat = { on: false, ent: null, load: 0, cap: 30 };
   function spawnBoat() {
-    const b = d.place('boat', ['village', 730, 880], { look: 'boat', name: '粮船', scale: 1.6 }); b.interact = null; b.ai = () => { b.moving = false; }; b.orderBias = 0; boat.ent = b;
+    const b = d.place('boat', ['village', 730, 880], { look: 'boat', name: '粮船', scale: 1.6 }); b.interact = null; b.noWater = true; b.ai = () => { b.moving = false; }; b.orderBias = 0; boat.ent = b;
     ui.toast('<b>沈家的粮船</b>划到了山脚下', 'dark');
     d.hotspot('boat_board', ['village', 730, 880], '粮船', '上船', async () => { boat.on = true; g.player.visible = false; g.player.locked = true; g.player.boatMode = true; ui.toast('<b>撑船</b>WASD 划，靠近屋顶救人，回山脚下放人', 'dark'); }, { r: 110, h: 1.2, active: () => !boat.on && boat.ent && boat.ent.scene === g.sceneId && g.view.depthAt(boat.ent.x, boat.ent.y) > 0.2 });
     boat.hs = d.hotspots.find(x => x.id === 'boat_board');
