@@ -46410,7 +46410,7 @@ void main() {
     village: {
       name: "\u51AF\u5BB6\u6751",
       img: "village",
-      map: [38, 58],
+      map: [65, 73],
       size: [1536, 1024],
       charH: 92,
       ground: "mud",
@@ -46443,7 +46443,7 @@ void main() {
     fields: {
       name: "\u5824\u4E0B\u7A3B\u7530",
       img: "fields",
-      map: [52, 52],
+      map: [35, 49],
       size: [1536, 1024],
       charH: 72,
       ground: "earth",
@@ -46471,7 +46471,7 @@ void main() {
     dike: {
       name: "\u65B0\u5B89\u6C5F\u5824",
       img: "dike",
-      map: [45, 36],
+      map: [44, 33],
       size: [1536, 1024],
       charH: 80,
       ground: "stone",
@@ -46495,7 +46495,7 @@ void main() {
     sluice: {
       name: "\u95F8\u53E3",
       img: "sluice",
-      map: [56, 38],
+      map: [31, 34],
       size: [1536, 1024],
       charH: 84,
       ground: "stone",
@@ -46525,7 +46525,7 @@ void main() {
     pier: {
       name: "\u6E21\u53E3",
       img: "pier",
-      map: [70, 34],
+      map: [75, 44],
       size: [1536, 1024],
       charH: 84,
       ground: "stone",
@@ -46549,7 +46549,7 @@ void main() {
     yamen: {
       name: "\u53BF\u8859",
       img: "yamen",
-      map: [78, 50],
+      map: [94, 51],
       size: [1536, 1024],
       charH: 92,
       ground: "stone",
@@ -46570,7 +46570,7 @@ void main() {
     town: {
       name: "\u6DF3\u5B89\u53BF\u57CE",
       img: "town",
-      map: [74, 56],
+      map: [85, 59],
       size: [1536, 1024],
       charH: 84,
       ground: "stone",
@@ -46610,7 +46610,7 @@ void main() {
     hillpath: {
       name: "\u540E\u5C71\u5C0F\u8DEF",
       img: "hillpath",
-      map: [28, 70],
+      map: [24, 67],
       size: [1024, 1536],
       charH: 70,
       ground: "stone",
@@ -46629,7 +46629,7 @@ void main() {
     temple: {
       name: "\u9F99\u738B\u5E99",
       img: "temple",
-      map: [20, 80],
+      map: [14, 48],
       size: [1536, 1024],
       charH: 90,
       ground: "stone",
