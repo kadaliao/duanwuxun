@@ -3,7 +3,13 @@ import * as THREE from 'three';
 import { Nav, pointInPoly } from './nav.js';
 
 const texLoader = new THREE.TextureLoader();
-export function loadTex(url) { return new Promise((res, rej) => texLoader.load(url, t => { t.colorSpace = THREE.SRGBColorSpace; t.generateMipmaps = true; t.minFilter = THREE.LinearMipmapLinearFilter; t.anisotropy = 8; res(t); }, undefined, rej)); }
+export function loadTex(url) {
+  return new Promise((res) => texLoader.load(url, t => { t.colorSpace = THREE.SRGBColorSpace; t.generateMipmaps = true; t.minFilter = THREE.LinearMipmapLinearFilter; t.anisotropy = 8; res(t); }, undefined, () => {
+    console.warn('场景图缺失，用灰底代替：' + url);
+    const c = document.createElement('canvas'); c.width = 64; c.height = 64; const x = c.getContext('2d'); x.fillStyle = '#4a4740'; x.fillRect(0, 0, 64, 64); x.fillStyle = '#3c3a35'; x.fillRect(0, 0, 32, 32); x.fillRect(32, 32, 32, 32);
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(24, 16); res(t);
+  }));
+}
 
 const WaterShader = {
   vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,

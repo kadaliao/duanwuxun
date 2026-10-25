@@ -45348,13 +45348,29 @@ void main() {
   // src/engine/scene.js
   var texLoader = new TextureLoader();
   function loadTex(url) {
-    return new Promise((res, rej) => texLoader.load(url, (t) => {
+    return new Promise((res) => texLoader.load(url, (t) => {
       t.colorSpace = SRGBColorSpace;
       t.generateMipmaps = true;
       t.minFilter = LinearMipmapLinearFilter;
       t.anisotropy = 8;
       res(t);
-    }, void 0, rej));
+    }, void 0, () => {
+      console.warn("\u573A\u666F\u56FE\u7F3A\u5931\uFF0C\u7528\u7070\u5E95\u4EE3\u66FF\uFF1A" + url);
+      const c = document.createElement("canvas");
+      c.width = 64;
+      c.height = 64;
+      const x = c.getContext("2d");
+      x.fillStyle = "#4a4740";
+      x.fillRect(0, 0, 64, 64);
+      x.fillStyle = "#3c3a35";
+      x.fillRect(0, 0, 32, 32);
+      x.fillRect(32, 32, 32, 32);
+      const t = new CanvasTexture(c);
+      t.colorSpace = SRGBColorSpace;
+      t.wrapS = t.wrapT = RepeatWrapping;
+      t.repeat.set(24, 16);
+      res(t);
+    }));
   }
   var WaterShader = {
     vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
