@@ -247,3 +247,8 @@ button { font-family: var(--font); cursor: pointer; }
 .hud-right button { background: rgba(14,12,10,0.6); border-color: rgba(201,162,74,0.5); }
 #banner { font-size: 46px; letter-spacing: 0.6em; text-shadow: 0 0 24px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.6); }
 #title .t-menu button { border-color: rgba(201,162,74,0.7); }
+#title::before { background: linear-gradient(90deg, rgba(5,8,14,0.78) 0%, rgba(5,8,14,0.45) 38%, rgba(5,8,14,0) 70%), linear-gradient(0deg, rgba(5,8,14,0.6) 0%, rgba(5,8,14,0) 30%); }
+#title .t-main { color: #f1e8d3; text-shadow: 0 0 40px rgba(0,0,0,0.95), 0 3px 0 #000, 0 0 2px #000; }
+#title .t-seal { border-color: #c9a24a; color: #e8c86a; background: rgba(0,0,0,0.45); }
+#title .t-menu button { background: rgba(10,12,16,0.45); border: 1px solid rgba(201,162,74,0.75); color: #f1e8d3; }
+#title .t-menu button:hover { background: rgba(201,162,74,0.9); color: #1d1813; }

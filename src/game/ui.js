@@ -22,10 +22,10 @@ export class UI {
         <div id="labels"></div>
         <div id="danger"></div>
       </div>
+      <div id="cg"></div>
       <div id="banner"></div>
       <div id="toasts"></div>
       <div id="dlg"><div class="portrait"></div><div class="box"><div class="who"></div><div class="text"></div><div class="pi" style="display:none"></div><div class="choices"></div><div class="next">▼ 空格</div><div class="hintkey"></div><div class="timer" style="width:0"></div></div></div>
-      <div id="cg"></div>
       <div id="overlay"></div>
       <div id="panels"></div>
       <div id="bigmap"></div>
@@ -54,7 +54,7 @@ export class UI {
       <div class="t-left"><div class="t-main">端午汛</div><div class="t-seal">一五六六</div></div>
       <div class="t-menu"><button data-a="start">开　卷</button><button data-a="cont" ${canContinue ? '' : 'disabled'}>续　卷</button><button data-a="how">玩　法</button></div>
       <div class="t-note">《大明王朝1566》同人游戏 · 编剧刘和平 原著 · 本作人物程知白等为原创<br>键盘 WASD / 鼠标点击 均可游玩</div>`);
-    t.id = 'title'; t.style.backgroundImage = 'url(assets/img/ui/title.webp)';
+    t.id = 'title'; t.style.backgroundImage = 'url(assets/img/cg/title.webp)';
     t.querySelector('[data-a=start]').onclick = () => { this.g.audio.resume(); t.remove(); onStart(); };
     t.querySelector('[data-a=cont]').onclick = () => { this.g.audio.resume(); t.remove(); onContinue(); };
     t.querySelector('[data-a=how]').onclick = () => this.openHow();
@@ -103,7 +103,7 @@ export class UI {
       } else { qm.style.display = 'none'; qa.style.display = 'none'; }
     } else { qm.style.display = 'none'; qa.style.display = 'none'; }
     // 出口标签
-    const ex = this.$('#exits'); if (g.view && !this.modal) { if (this._exitScene !== g.sceneId) { this._exitScene = g.sceneId; ex.innerHTML = g.view.exits.map((e, i) => `<div class="exit" data-i="${i}">${SCENES[e.to].name}</div>`).join(''); } g.view.exits.forEach((e, i) => { const d = ex.children[i]; if (!d) return; const cx = e.poly.reduce((n, p) => n + p[0], 0) / e.poly.length, cy = e.poly.reduce((n, p) => n + p[1], 0) / e.poly.length; const s = g.toScreen(cx, cy, 0); d.style.left = Math.max(40, Math.min(window.innerWidth - 40, s.x)) + 'px'; d.style.top = Math.max(60, Math.min(window.innerHeight - 40, s.y)) + 'px'; d.style.opacity = s.behind ? 0 : 1; }); } else ex.innerHTML = '';
+    const ex = this.$('#exits'); if (g.view && !this.modal) { if (this._exitScene !== g.sceneId) { this._exitScene = g.sceneId; ex.innerHTML = g.view.exits.map((e, i) => `<div class="exit" data-i="${i}">${SCENES[e.to].name}</div>`).join(''); } g.view.exits.forEach((e, i) => { const d = ex.children[i]; if (!d) return; const cx = e.poly.reduce((n, p) => n + p[0], 0) / e.poly.length, cy = e.poly.reduce((n, p) => n + p[1], 0) / e.poly.length; const s = g.toScreen(cx, cy, 0); d.style.left = Math.max(40, Math.min(window.innerWidth - 40, s.x)) + 'px'; d.style.top = Math.max(60, Math.min(window.innerHeight - 80, s.y)) + 'px'; d.style.opacity = s.behind ? 0 : 1; }); } else ex.innerHTML = '';
     const inc = this.$('.incense'); if (g.director.countdown != null) { inc.style.display = 'block'; inc.firstElementChild.style.width = Math.max(0, Math.min(100, g.director.countdown * 100)) + '%'; } else inc.style.display = 'none';
     this.$('#danger').classList.toggle('on', !!g.director.danger);
     if (this.debug) this.drawDebug();

@@ -107,7 +107,7 @@ export const SCENES = {
       { to: 'town', poly: R(1280, 860, 1536, 1000), at: [1180, 180], face: [0, 1] },
       { to: 'sluice', poly: R(300, 700, 335, 1000), at: [1470, 330], face: [1, 0] },
     ],
-    spots: { enter: [1350, 900], landing: [780, 580], pierEnd: [930, 230], hut: [610, 530], qian: [640, 540], boatman: [800, 440], boats: [880, 300], lower: [800, 850] },
+    spots: { enter: [1200, 820], landing: [780, 580], pierEnd: [930, 230], hut: [610, 530], qian: [640, 540], boatman: [800, 440], boats: [880, 300], lower: [800, 850] },
     lights: [{ x: 875, y: 215, r: 110, color: 0xffa040, g: 10 }, { x: 972, y: 205, r: 110, color: 0xffa040, g: 10 }, { x: 733, y: 320, r: 100, color: 0xffa040, g: 9 }, { x: 545, y: 435, r: 110, color: 0xffa040, g: 10 }, { x: 689, y: 790, r: 120, color: 0xffa040, g: 11 }, { x: 1320, y: 660, r: 120, color: 0xffa040, g: 11 }, { x: 1470, y: 820, r: 120, color: 0xffa040, g: 11 }, { x: 410, y: 770, r: 100, color: 0xffa040, g: 9 }],
     flood: { base: 0.6, max: 1, blur: 3, offset: 0.15, zones: [{ poly: R(0, 0, 1536, 470), h: 1 }] },
     ambience: { river: 1 },

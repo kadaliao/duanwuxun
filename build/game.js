@@ -46541,7 +46541,7 @@ void main() {
         { to: "town", poly: R(1280, 860, 1536, 1e3), at: [1180, 180], face: [0, 1] },
         { to: "sluice", poly: R(300, 700, 335, 1e3), at: [1470, 330], face: [1, 0] }
       ],
-      spots: { enter: [1350, 900], landing: [780, 580], pierEnd: [930, 230], hut: [610, 530], qian: [640, 540], boatman: [800, 440], boats: [880, 300], lower: [800, 850] },
+      spots: { enter: [1200, 820], landing: [780, 580], pierEnd: [930, 230], hut: [610, 530], qian: [640, 540], boatman: [800, 440], boats: [880, 300], lower: [800, 850] },
       lights: [{ x: 875, y: 215, r: 110, color: 16752704, g: 10 }, { x: 972, y: 205, r: 110, color: 16752704, g: 10 }, { x: 733, y: 320, r: 100, color: 16752704, g: 9 }, { x: 545, y: 435, r: 110, color: 16752704, g: 10 }, { x: 689, y: 790, r: 120, color: 16752704, g: 11 }, { x: 1320, y: 660, r: 120, color: 16752704, g: 11 }, { x: 1470, y: 820, r: 120, color: 16752704, g: 11 }, { x: 410, y: 770, r: 100, color: 16752704, g: 9 }],
       flood: { base: 0.6, max: 1, blur: 3, offset: 0.15, zones: [{ poly: R(0, 0, 1536, 470), h: 1 }] },
       ambience: { river: 1 }
@@ -46763,10 +46763,10 @@ void main() {
         <div id="labels"></div>
         <div id="danger"></div>
       </div>
+      <div id="cg"></div>
       <div id="banner"></div>
       <div id="toasts"></div>
       <div id="dlg"><div class="portrait"></div><div class="box"><div class="who"></div><div class="text"></div><div class="pi" style="display:none"></div><div class="choices"></div><div class="next">\u25BC \u7A7A\u683C</div><div class="hintkey"></div><div class="timer" style="width:0"></div></div></div>
-      <div id="cg"></div>
       <div id="overlay"></div>
       <div id="panels"></div>
       <div id="bigmap"></div>
@@ -46836,7 +46836,7 @@ void main() {
       <div class="t-menu"><button data-a="start">\u5F00\u3000\u5377</button><button data-a="cont" ${canContinue ? "" : "disabled"}>\u7EED\u3000\u5377</button><button data-a="how">\u73A9\u3000\u6CD5</button></div>
       <div class="t-note">\u300A\u5927\u660E\u738B\u671D1566\u300B\u540C\u4EBA\u6E38\u620F \xB7 \u7F16\u5267\u5218\u548C\u5E73 \u539F\u8457 \xB7 \u672C\u4F5C\u4EBA\u7269\u7A0B\u77E5\u767D\u7B49\u4E3A\u539F\u521B<br>\u952E\u76D8 WASD / \u9F20\u6807\u70B9\u51FB \u5747\u53EF\u6E38\u73A9</div>`);
       t.id = "title";
-      t.style.backgroundImage = "url(assets/img/ui/title.webp)";
+      t.style.backgroundImage = "url(assets/img/cg/title.webp)";
       t.querySelector("[data-a=start]").onclick = () => {
         this.g.audio.resume();
         t.remove();
@@ -46952,7 +46952,7 @@ void main() {
           const cx = e.poly.reduce((n, p2) => n + p2[0], 0) / e.poly.length, cy = e.poly.reduce((n, p2) => n + p2[1], 0) / e.poly.length;
           const s = g.toScreen(cx, cy, 0);
           d.style.left = Math.max(40, Math.min(window.innerWidth - 40, s.x)) + "px";
-          d.style.top = Math.max(60, Math.min(window.innerHeight - 40, s.y)) + "px";
+          d.style.top = Math.max(60, Math.min(window.innerHeight - 80, s.y)) + "px";
           d.style.opacity = s.behind ? 0 : 1;
         });
       } else ex.innerHTML = "";
