@@ -1,0 +1,21 @@
+{
+  "name": "dmwc2.5d",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "watch": "node tools/build.mjs --watch",
+    "dev": "python3 -m http.server 8567"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "esbuild": "^0.28.2",
+    "playwright-core": "^1.64.1",
+    "pngjs": "^7.0.0",
+    "three": "^0.186.1"
+  }
+}

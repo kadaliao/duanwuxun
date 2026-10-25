@@ -1,0 +1,45 @@
+{
+ "portrait_comp": "COMPOSITION: half-length character portrait (绣像) as in the portrait pages of late-Ming illustrated novels; figure centered, from the waist up, three-quarter view, on bare plain paper background with absolutely nothing else, generous empty paper margin on all sides of the figure.",
+ "items": [
+  {
+   "out": "art/raw/portraits/innkeeper.png",
+   "shape": "portrait",
+   "subject": "The keeper of a small county-town inn in Chun'an, about 50: round genial face, small eyes, a thin moustache, wears a plain brown merchant's robe with an apron and a soft black cap; holds a teapot in one hand and a cloth over the other arm; slightly bowing with a professional smile."
+  },
+  {
+   "out": "art/raw/portraits/chaiyi.png",
+   "shape": "portrait",
+   "subject": "A county yamen runner (差役) of Chun'an, about 30: lean, sly face, wears a short black jacket with a red cloth belt, a small round black cap with a red tassel, carries a wooden tally board under his arm; standing with an impatient, officious air."
+  },
+  {
+   "out": "art/raw/portraits/merchant.png",
+   "shape": "portrait",
+   "subject": "The manager of a rice shop in Chun'an town, about 45: plump, shrewd smiling face with narrow calculating eyes, a short beard; wears a fine dark silk merchant's robe and a square cloth cap; holds an abacus against his chest; hands folded over it."
+  },
+  {
+   "out": "art/raw/portraits/boatman.png",
+   "shape": "portrait",
+   "subject": "A river boatman of the Xin'an River, about 40: lean sun-darkened face, bare muscular arms, wears a sleeveless hemp jacket open at the chest, a conical bamboo hat on his head; holds a long bamboo punting pole; squinting at the viewer."
+  },
+  {
+   "out": "art/raw/portraits/monk.png",
+   "shape": "portrait",
+   "subject": "The elderly temple keeper (庙祝) of a small Dragon King temple on a hill, about 65: thin, calm, kindly face with white eyebrows and a wispy white beard, wears a plain grey Daoist-style robe and a soft cloth cap; holds a bundle of incense sticks; hands together."
+  },
+  {
+   "out": "art/raw/portraits/soldier.png",
+   "shape": "portrait",
+   "subject": "A provincial soldier (号衣兵) in Ming-dynasty Zhejiang, about 25: plain coarse face, no beard, wears a short dark uniform jacket with a large character badge on the chest, a red headband, carries a spear over his shoulder; standing stiffly."
+  },
+  {
+   "out": "art/raw/portraits/townsman.png",
+   "shape": "portrait",
+   "subject": "An ordinary townsman of Chun'an county town, about 35: honest, slightly worried face, wears a plain blue cotton robe and a cloth cap, hands tucked in his sleeves; standing a little hunched as if against the wind."
+  },
+  {
+   "out": "art/raw/portraits/qinbing.png",
+   "shape": "portrait",
+   "subject": "A personal guard (亲兵) of the Governor-General Hu Zongxian, about 30: hard, disciplined face, short beard, wears a Ming military brigandine jacket over a red uniform, a small iron helmet; holds a sealed letter in one hand and a lantern in the other; standing at attention."
+  }
+ ]
+}

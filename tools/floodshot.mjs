@@ -1,0 +1,13 @@
+import { chromium } from 'playwright-core';
+const exe='/Users/liaoxingyi/Library/Caches/ms-playwright/chromium-1243/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing';
+const browser = await chromium.launch({ executablePath: exe, args: ['--use-gl=angle','--use-angle=metal','--ignore-gpu-blocklist'] });
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+page.on('pageerror', e => console.log('ERR', e.message));
+await page.goto('http://127.0.0.1:8567/index.html'); await page.waitForTimeout(1200);
+await page.evaluate(async () => { const g = window.game; g.ui.title.remove(); g.director.titlePan = false; g.cinematicCam = false; g.spawnPlayer(33.5, 44.5); g.ui.showHUD(true); g.clock.set(23.2); g.clock.dark = 0.75; g.weather.set(1, true); g.flood.targetLevel = 1.05; g.flood.rate = 0.03; g.flood.start(45.5, 22); g.world.waterUniforms.uFlood.value = 1; });
+await page.waitForTimeout(9000); await page.screenshot({ path: 'tools/shots/flood-village.png' });
+await page.evaluate(() => { const g = window.game; g.r.zoom = 26; g.r.updateCamera(); g.cinematicCam = true; g.r.follow(45, 0, 45, true); });
+await page.waitForTimeout(12000); await page.screenshot({ path: 'tools/shots/flood-wide.png' });
+const t = await page.evaluate(() => { const g = window.game; let n=0; for (let i=0;i<g.map.W*g.map.D;i++) if (g.world.floodLevel[i] > 0.5) n++; return { tiles: n, level: g.flood.level, villageDepth: g.world.depthAt(33.5,44.5), roadDepth: g.world.depthAt(58,44.5), townDepth: g.world.depthAt(99,47), pathDepth: g.world.depthAt(31.5,70) }; });
+console.log(JSON.stringify(t));
+await browser.close();

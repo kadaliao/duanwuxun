@@ -1,0 +1,33 @@
+// 人物表：名字、头衔、判词、绣像文件、像素立绘。
+export const PORTRAITS = {
+  player: 'chengzhibai', changboxi: 'changboxi', maningyuan: 'maningyuan', huzongxian: 'huzongxian', fenglaosi: 'fenglaosi', laohegong: 'lao_hegong',
+  qidazhu: 'qidazhu', ayang: 'ayang', jiangqianhu: 'jiangqianhu', qianguanjia: 'qianguanjia', shenyishi: 'shenyishi', yangjinshui: 'yangjinshui', zhengbichang: 'zhengbichang', hemaocai: 'hemaocai', tanlun: 'tanlun',
+  cunmin_m: 'cunmin_m', cunmin_f: 'cunmin_f', cunmin_old: 'cunmin_old', minzhuang: 'minzhuang',
+  innkeeper: 'innkeeper', chaiyi: 'chaiyi', merchant: 'merchant', boatman: 'boatman', monk: 'monk', soldier: 'soldier', townsman: 'townsman', qinbing: 'qinbing',
+};
+export const CHARS = {
+  player: { name: '程知白', title: '户部观政进士。徽州歙县人，徽商之子，精于算学。', pan: '知其白，守其黑。父亲取这个名字的时候，大概没想过这六个字有多难。' },
+  changboxi: { name: '常伯熙', title: '淳安知县。', pan: '七品芝麻官，夹在上头的札子和下头的百姓中间。', look: 'changboxi' },
+  maningyuan: { name: '马宁远', title: '杭州知府，兼新安江河道总管。举人出身，胡宗宪一手提拔。', pan: '一个只认上司、不问为什么的人。这样的人，用起来最顺手，扔起来也最顺手。', look: 'maningyuan' },
+  huzongxian: { name: '胡宗宪', title: '浙直总督兼浙江巡抚。徽州绩溪人，严嵩的门生。', pan: '东南抗倭的柱子。他知道每一笔军饷从哪里来，也知道它们不干净。', look: 'huzongxian' },
+  fenglaosi: { name: '冯老四', title: '淳安冯家村的农户，守着祖上传下来的两亩水田。', pan: '种了一辈子稻子。改稻为桑这四个字，他听了三遍，还是没听明白。', look: 'fenglaosi' },
+  ayang: { name: '阿秧', title: '冯老四的孙女，七岁。', pan: '她问你，算盘上能不能算出今年的雨。', look: 'ayang' },
+  laohegong: { name: '吴老倌', title: '新安江堤上守了四十年的河工。', pan: '他不识字，可堤上每一处管涌，他都叫得出名字。', look: 'laohegong' },
+  qidazhu: { name: '齐大柱', title: '淳安的农人，脾气硬，不肯跪。', pan: '他不懂国策，只认得秧苗是一年的口粮。', look: 'qidazhu' },
+  jiangqianhu: { name: '蒋千户', title: '浙江按察使司千户。', pan: '踏苗那天跟在马宁远身后的人。他记得每一张拦过他的脸。', look: 'jiangqianhu' },
+  qianguanjia: { name: '钱管家', title: '沈一石府上的管家，守着渡口的粮船。', pan: '东家的话他一个字不会漏，东家没说的话他一个字不会多。', look: 'qianguanjia' },
+  shenyishi: { name: '沈一石', title: '江南首富。替织造局经营丝绸生意。', pan: '替织造局经商二十年，做到江南首富。他比谁都清楚，这份家业不姓沈。' },
+  minzhuang: { name: '民壮头目', title: '淳安县的民壮。', pan: '', look: 'minzhuang' },
+  cunmin_m: { name: '村民', title: '冯家村的农户。', look: 'villager_m' },
+  cunmin_f: { name: '村妇', title: '冯家村的农妇。', look: 'villager_f' },
+  cunmin_old: { name: '老婆婆', title: '冯家村最老的人。', look: 'villager_old' },
+  soldier: { name: '号衣兵', title: '臬司衙门的兵。', look: 'soldier' },
+  chaiyi: { name: '差役', title: '县衙的差役。', look: 'chaiyi' },
+  boatman: { name: '船夫', title: '渡口的船夫。', look: 'boatman' },
+  merchant: { name: '米行掌柜', title: '淳安城里的米商。', look: 'merchant' },
+  townsman: { name: '城里人', title: '', look: 'townsman' },
+  monk: { name: '庙祝', title: '龙王庙的庙祝。', look: 'monk' },
+  innkeeper: { name: '店家', title: '客栈掌柜。', look: 'merchant' },
+  qinbing: { name: '亲兵', title: '总督衙门的亲兵。', look: 'qinbing' },
+  narr: { name: '' },
+};
