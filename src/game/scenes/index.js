@@ -128,14 +128,25 @@ export const SCENES = {
     ambience: { river: 0 },
   },
   town: {
-    name: '淳安县城', img: 'town', map: [74, 56], size: [1536, 1024], charH: 92, ground: 'stone', scale: { y0: 0.2, s0: 0.75, y1: 0.95, s1: 1.15 },
-    walk: [R(100, 300, 1436, 900)], exits: [
-      { to: 'fields', poly: R(100, 300, 160, 900), at: [1480, 505], face: [-1, 0] },
-      { to: 'yamen', poly: R(900, 300, 1100, 340), at: [750, 930], face: [0, -1] },
-      { to: 'pier', poly: R(1100, 300, 1436, 340), at: [1380, 930], face: [0, -1] },
+    name: '淳安县城', img: 'town', map: [74, 56], size: [1536, 1024], charH: 84, ground: 'stone', scale: { y0: 0.15, s0: 0.6, y1: 0.95, s1: 1.15 },
+    walk: [
+      [[40, 800], [300, 790], [470, 720], [600, 590], [760, 590], [850, 640], [850, 840], [740, 850], [740, 1024], [40, 1024]],
+      [[600, 590], [640, 200], [760, 180], [790, 440], [760, 590]],
+      [[760, 590], [790, 440], [1000, 470], [1250, 560], [1260, 660], [1100, 790], [850, 840], [850, 640]],
+      [[1000, 470], [1130, 300], [1230, 300], [1250, 560]],
     ],
-    spots: { enter: [700, 600], innDoor: [500, 600], innWait: [560, 650], street: [800, 600], rice: [900, 500], well: [760, 620], westGate: [180, 600], northLane: [1000, 360] },
-    lights: [], flood: { base: 0.7, max: 1, offset: 0.3 }, ambience: { river: 0 },
+    block: [R(670, 480, 770, 560)],
+    occluders: [{ poly: R(760, 330, 1000, 480), base: 480 }, { poly: R(750, 830, 1536, 1024), base: 1024 }, { poly: R(60, 300, 470, 800), base: 800 }, { poly: R(1240, 420, 1536, 830), base: 830 }],
+    exits: [
+      { to: 'fields', poly: R(40, 800, 90, 1024), at: [1480, 505], face: [-1, 0] },
+      { to: 'yamen', poly: R(640, 180, 760, 215), at: [750, 930], face: [0, -1] },
+      { to: 'pier', poly: R(1130, 300, 1240, 330), at: [1200, 820], face: [0, -1] },
+    ],
+    spots: { enter: [380, 900], innDoor: [330, 810], innWait: [430, 840], street: [720, 680], rice: [1130, 760], well: [720, 600], westGate: [100, 900], northLane: [700, 300] },
+    lights: [{ x: 235, y: 575, r: 110, color: 0xff7a30, g: 9 }, { x: 150, y: 625, r: 90, color: 0xff7a30, g: 8 }, { x: 135, y: 720, r: 90, color: 0xff7a30, g: 8 }, { x: 470, y: 505, r: 90, color: 0xff7a30, g: 8 }, { x: 320, y: 690, r: 140, color: 0xffb060, a: 0.7, g: 0, glow: false },
+      { x: 1290, y: 510, r: 100, color: 0xff7a30, g: 9 }, { x: 1310, y: 735, r: 100, color: 0xff7a30, g: 9 }, { x: 1405, y: 790, r: 90, color: 0xff7a30, g: 8 }, { x: 1250, y: 640, r: 150, color: 0xffb060, a: 0.6, g: 0, glow: false },
+      { x: 950, y: 400, r: 90, color: 0xff7a30, g: 8 }, { x: 1095, y: 390, r: 80, color: 0xff7a30, g: 7 }, { x: 1200, y: 290, r: 80, color: 0xff7a30, g: 7 }, { x: 170, y: 110, r: 80, color: 0xffa040, a: 0.6, g: 6 }],
+    flood: { base: 0.7, max: 1, offset: 0.3 }, ambience: { river: 0 },
   },
   hillpath: {
     name: '后山小路', img: 'hillpath', map: [28, 70], size: [1024, 1536], charH: 70, ground: 'stone', scale: { y0: 0.05, s0: 0.55, y1: 0.95, s1: 1.2 },

@@ -2,7 +2,7 @@
 export const PORTRAITS = {
   player: 'chengzhibai', changboxi: 'changboxi', maningyuan: 'maningyuan', huzongxian: 'huzongxian', fenglaosi: 'fenglaosi', laohegong: 'lao_hegong',
   qidazhu: 'qidazhu', ayang: 'ayang', jiangqianhu: 'jiangqianhu', qianguanjia: 'qianguanjia', shenyishi: 'shenyishi', yangjinshui: 'yangjinshui', zhengbichang: 'zhengbichang', hemaocai: 'hemaocai', tanlun: 'tanlun',
-  cunmin_m: 'cunmin_m', cunmin_f: 'cunmin_f', cunmin_old: 'cunmin_old', minzhuang: 'minzhuang',
+  cunmin_m: 'cunmin_m', cunmin_f: 'cunmin_f', cunmin_old: 'cunmin_old', minzhuang: 'minzhuang', tanlun: 'tanlun', zhengbichang: 'zhengbichang', hemaocai: 'hemaocai',
   innkeeper: 'innkeeper', chaiyi: 'chaiyi', merchant: 'merchant', boatman: 'boatman', monk: 'monk', soldier: 'soldier', townsman: 'townsman', qinbing: 'qinbing',
 };
 export const CHARS = {
@@ -29,5 +29,8 @@ export const CHARS = {
   monk: { name: '庙祝', title: '龙王庙的庙祝。', look: 'monk' },
   innkeeper: { name: '店家', title: '客栈掌柜。', look: 'merchant' },
   qinbing: { name: '亲兵', title: '总督衙门的亲兵。', look: 'qinbing' },
+  tanlun: { name: '谭纶', title: '裕王府詹事，奉命去浙江见胡宗宪。', pan: '清流派到江南的眼睛。他问你站在哪边，自己早就站好了。' },
+  zhengbichang: { name: '郑泌昌', title: '浙江布政使。', pan: '话只说半句。另外半句，要看年景。' },
+  hemaocai: { name: '何茂才', title: '浙江按察使。', pan: '嗓门大，酒量大，手也黑。' },
   narr: { name: '' },
 };

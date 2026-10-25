@@ -46572,17 +46572,38 @@ void main() {
       img: "town",
       map: [74, 56],
       size: [1536, 1024],
-      charH: 92,
+      charH: 84,
       ground: "stone",
-      scale: { y0: 0.2, s0: 0.75, y1: 0.95, s1: 1.15 },
-      walk: [R(100, 300, 1436, 900)],
-      exits: [
-        { to: "fields", poly: R(100, 300, 160, 900), at: [1480, 505], face: [-1, 0] },
-        { to: "yamen", poly: R(900, 300, 1100, 340), at: [750, 930], face: [0, -1] },
-        { to: "pier", poly: R(1100, 300, 1436, 340), at: [1380, 930], face: [0, -1] }
+      scale: { y0: 0.15, s0: 0.6, y1: 0.95, s1: 1.15 },
+      walk: [
+        [[40, 800], [300, 790], [470, 720], [600, 590], [760, 590], [850, 640], [850, 840], [740, 850], [740, 1024], [40, 1024]],
+        [[600, 590], [640, 200], [760, 180], [790, 440], [760, 590]],
+        [[760, 590], [790, 440], [1e3, 470], [1250, 560], [1260, 660], [1100, 790], [850, 840], [850, 640]],
+        [[1e3, 470], [1130, 300], [1230, 300], [1250, 560]]
       ],
-      spots: { enter: [700, 600], innDoor: [500, 600], innWait: [560, 650], street: [800, 600], rice: [900, 500], well: [760, 620], westGate: [180, 600], northLane: [1e3, 360] },
-      lights: [],
+      block: [R(670, 480, 770, 560)],
+      occluders: [{ poly: R(760, 330, 1e3, 480), base: 480 }, { poly: R(750, 830, 1536, 1024), base: 1024 }, { poly: R(60, 300, 470, 800), base: 800 }, { poly: R(1240, 420, 1536, 830), base: 830 }],
+      exits: [
+        { to: "fields", poly: R(40, 800, 90, 1024), at: [1480, 505], face: [-1, 0] },
+        { to: "yamen", poly: R(640, 180, 760, 215), at: [750, 930], face: [0, -1] },
+        { to: "pier", poly: R(1130, 300, 1240, 330), at: [1200, 820], face: [0, -1] }
+      ],
+      spots: { enter: [380, 900], innDoor: [330, 810], innWait: [430, 840], street: [720, 680], rice: [1130, 760], well: [720, 600], westGate: [100, 900], northLane: [700, 300] },
+      lights: [
+        { x: 235, y: 575, r: 110, color: 16742960, g: 9 },
+        { x: 150, y: 625, r: 90, color: 16742960, g: 8 },
+        { x: 135, y: 720, r: 90, color: 16742960, g: 8 },
+        { x: 470, y: 505, r: 90, color: 16742960, g: 8 },
+        { x: 320, y: 690, r: 140, color: 16756832, a: 0.7, g: 0, glow: false },
+        { x: 1290, y: 510, r: 100, color: 16742960, g: 9 },
+        { x: 1310, y: 735, r: 100, color: 16742960, g: 9 },
+        { x: 1405, y: 790, r: 90, color: 16742960, g: 8 },
+        { x: 1250, y: 640, r: 150, color: 16756832, a: 0.6, g: 0, glow: false },
+        { x: 950, y: 400, r: 90, color: 16742960, g: 8 },
+        { x: 1095, y: 390, r: 80, color: 16742960, g: 7 },
+        { x: 1200, y: 290, r: 80, color: 16742960, g: 7 },
+        { x: 170, y: 110, r: 80, color: 16752704, a: 0.6, g: 6 }
+      ],
       flood: { base: 0.7, max: 1, offset: 0.3 },
       ambience: { river: 0 }
     },
@@ -46699,6 +46720,9 @@ void main() {
     cunmin_f: "cunmin_f",
     cunmin_old: "cunmin_old",
     minzhuang: "minzhuang",
+    tanlun: "tanlun",
+    zhengbichang: "zhengbichang",
+    hemaocai: "hemaocai",
     innkeeper: "innkeeper",
     chaiyi: "chaiyi",
     merchant: "merchant",
@@ -46732,6 +46756,9 @@ void main() {
     monk: { name: "\u5E99\u795D", title: "\u9F99\u738B\u5E99\u7684\u5E99\u795D\u3002", look: "monk" },
     innkeeper: { name: "\u5E97\u5BB6", title: "\u5BA2\u6808\u638C\u67DC\u3002", look: "merchant" },
     qinbing: { name: "\u4EB2\u5175", title: "\u603B\u7763\u8859\u95E8\u7684\u4EB2\u5175\u3002", look: "qinbing" },
+    tanlun: { name: "\u8C2D\u7EB6", title: "\u88D5\u738B\u5E9C\u8A79\u4E8B\uFF0C\u5949\u547D\u53BB\u6D59\u6C5F\u89C1\u80E1\u5B97\u5BAA\u3002", pan: "\u6E05\u6D41\u6D3E\u5230\u6C5F\u5357\u7684\u773C\u775B\u3002\u4ED6\u95EE\u4F60\u7AD9\u5728\u54EA\u8FB9\uFF0C\u81EA\u5DF1\u65E9\u5C31\u7AD9\u597D\u4E86\u3002" },
+    zhengbichang: { name: "\u90D1\u6CCC\u660C", title: "\u6D59\u6C5F\u5E03\u653F\u4F7F\u3002", pan: "\u8BDD\u53EA\u8BF4\u534A\u53E5\u3002\u53E6\u5916\u534A\u53E5\uFF0C\u8981\u770B\u5E74\u666F\u3002" },
+    hemaocai: { name: "\u4F55\u8302\u624D", title: "\u6D59\u6C5F\u6309\u5BDF\u4F7F\u3002", pan: "\u55D3\u95E8\u5927\uFF0C\u9152\u91CF\u5927\uFF0C\u624B\u4E5F\u9ED1\u3002" },
     narr: { name: "" }
   };
 
@@ -47094,8 +47121,16 @@ void main() {
         const ch = CHARS[who];
         const por = this.dlg.querySelector(".portrait");
         if (who && who !== "narr" && ch) {
-          if (PORTRAITS[who]) {
-            por.className = "portrait" + (this.painted.has(PORTRAITS[who]) ? " painted" : "");
+          if (PORTRAITS[who] && this.painted.has(PORTRAITS[who])) {
+            por.className = "portrait painted";
+            por.style.backgroundImage = `url(${this.portraitURL(who, true)})`;
+            por.style.display = "";
+          } else if (ch.look && META[ch.look] && !META[ch.look].placeholder) {
+            por.className = "portrait sprite";
+            por.style.backgroundImage = `url(${frameDataURL(META[ch.look], 0, 0)})`;
+            por.style.display = "";
+          } else if (PORTRAITS[who]) {
+            por.className = "portrait";
             por.style.backgroundImage = `url(${this.portraitURL(who, true)})`;
             por.style.display = "";
           } else if (ch.look && META[ch.look]) {

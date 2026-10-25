@@ -139,7 +139,9 @@ export class UI {
       const who = node.who; const ch = CHARS[who];
       const por = this.dlg.querySelector('.portrait');
       if (who && who !== 'narr' && ch) {
-        if (PORTRAITS[who]) { por.className = 'portrait' + (this.painted.has(PORTRAITS[who]) ? ' painted' : ''); por.style.backgroundImage = `url(${this.portraitURL(who, true)})`; por.style.display = ''; }
+        if (PORTRAITS[who] && this.painted.has(PORTRAITS[who])) { por.className = 'portrait painted'; por.style.backgroundImage = `url(${this.portraitURL(who, true)})`; por.style.display = ''; }
+        else if (ch.look && META[ch.look] && !META[ch.look].placeholder) { por.className = 'portrait sprite'; por.style.backgroundImage = `url(${frameDataURL(META[ch.look], 0, 0)})`; por.style.display = ''; }
+        else if (PORTRAITS[who]) { por.className = 'portrait'; por.style.backgroundImage = `url(${this.portraitURL(who, true)})`; por.style.display = ''; }
         else if (ch.look && META[ch.look]) { por.className = 'portrait sprite'; por.style.backgroundImage = `url(${frameDataURL(META[ch.look], 0, 0)})`; por.style.display = ''; }
         else por.style.display = 'none';
       } else por.style.display = 'none';
