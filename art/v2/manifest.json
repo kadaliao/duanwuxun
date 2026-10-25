@@ -1,0 +1,11 @@
+{ "items": [
+ { "out": "art/raw/v2/sheet_player.png", "shape": "landscape", "prompt": "art/v2/prompts/sheet_player.txt", "transparent": true },
+ { "out": "art/raw/v2/scene_town.png", "shape": "landscape", "prompt": "art/v2/prompts/scene_town.txt" },
+ { "out": "art/raw/v2/scene_yamen.png", "shape": "landscape", "prompt": "art/v2/prompts/scene_yamen.txt" },
+ { "out": "art/raw/v2/scene_fields.png", "shape": "landscape", "prompt": "art/v2/prompts/scene_fields.txt" },
+ { "out": "art/raw/v2/scene_dike.png", "shape": "landscape", "prompt": "art/v2/prompts/scene_dike.txt" },
+ { "out": "art/raw/v2/scene_sluice.png", "shape": "landscape", "prompt": "art/v2/prompts/scene_sluice.txt" },
+ { "out": "art/raw/v2/scene_pier.png", "shape": "landscape", "prompt": "art/v2/prompts/scene_pier.txt" },
+ { "out": "art/raw/v2/scene_hillpath.png", "shape": "landscape", "prompt": "art/v2/prompts/scene_hillpath.txt" },
+ { "out": "art/raw/v2/scene_temple.png", "shape": "landscape", "prompt": "art/v2/prompts/scene_temple.txt" }
+]}

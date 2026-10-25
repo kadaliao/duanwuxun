@@ -1,0 +1,10 @@
+import { chromium } from 'playwright-core';
+import { writeFileSync } from 'node:fs';
+const exe = '/Users/liaoxingyi/Library/Caches/ms-playwright/chromium-1243/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing';
+const browser = await chromium.launch({ executablePath: exe, args: ['--use-gl=angle', '--use-angle=metal', '--ignore-gpu-blocklist'] });
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+await page.goto('http://127.0.0.1:8567/index.html'); await page.waitForTimeout(1500);
+const r = await page.evaluate(async () => { const g = window.game; g.ui.title.remove(); g.state.reset(); await g.director.startDay(1, { scene: 'village', px: 1560, py: 1240 }); const v = g.view; const c = v.elevTex.image; const d = v.elevData.data; let hist = {}; for (let i = 0; i < d.length; i += 4 * 97) { const k = Math.round(d[i] / 16) * 16; hist[k] = (hist[k] || 0) + 1; } return { url: c.toDataURL(), w: c.width, h: c.height, hist, flipY: v.elevTex.flipY, sample: [v.elevAt(1560, 1240), v.elevAt(200, 1800), v.elevAt(2400, 1000)] }; });
+writeFileSync('tools/shots/v2/elev.png', Buffer.from(r.url.split(',')[1], 'base64'));
+console.log(r.w, r.h, JSON.stringify(r.hist), 'flipY', r.flipY, 'samples', r.sample);
+await browser.close();

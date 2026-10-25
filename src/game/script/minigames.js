@@ -5,20 +5,16 @@ import { wait } from '../director.js';
 export async function tingdi(d) {
   const g = d.g, ui = g.ui, audio = g.audio;
   const spots = [];
-  // 8 处，其中闸口附近两处是空的，另随机一处空
-  const xs = [26, 30, 34, 38, 42, 44, 47, 52];
+  const xs = [300, 420, 540, 660, 780, 900, 1020, 1140];
   const hollowSet = new Set([5, 6, (Math.random() < 0.5 ? 1 : 3)]);
-  xs.forEach((x, i) => spots.push({ x, hollow: hollowSet.has(i) }));
+  xs.forEach((x, i) => spots.push({ x, y: 355 + (x - 60) * 0.166, hollow: hollowSet.has(i) }));
   let right = 0;
-  const panel = () => ui.showPanel('听堤', '');
+  if (g.sceneId !== 'dike') await d.teleport(['dike', 300, 400]);
   for (let i = 0; i < spots.length; i++) {
     const s = spots[i];
-    // 走到那一处
-    g.player.locked = true; g.cinematicCam = true;
-    g.player.goTo(s.x + 0.5, 19.5); const h = d.g.npc('laohegong'); if (h) h.goTo(s.x - 1, 19.6);
-    g.r.follow(s.x, 2.2, 19.5);
-    await waitUntil(() => !g.player.path, 6000);
-    // 戳一下：声音
+    g.player.locked = true;
+    const p = d.pos(['dike', s.x, s.y]); g.player.goTo(p.x, p.y); const h = d.g.npc('laohegong'); if (h) { h.ai = null; const hp = d.pos(['dike', s.x - 50, s.y - 10]); h.goTo(hp.x, hp.y); }
+    await waitUntil(() => !g.player.path, 7000);
     await wait(300);
     if (s.hollow) { audio.tone(140, 0.5, 'triangle', 0.35); audio.noise(0.4, 300, 0.7, 0.25, 'lowpass'); }
     else { audio.tone(90, 0.18, 'sine', 0.3); audio.noise(0.1, 200, 0.5, 0.3, 'lowpass'); }
@@ -29,9 +25,10 @@ export async function tingdi(d) {
     const ok = (a === 'hollow') === s.hollow;
     if (ok) { right++; ui.toast(s.hollow ? '<b>空</b>里头有洞' : '<b>实</b>', 'dark'); }
     else { ui.toast('听岔了', 'red'); audio.bad(); }
-    if (s.x >= 44 && s.x <= 47 && s.hollow) { await d.say('laohegong', '闸这一段……空的。去年新砌的条石，底下怎么会空？'); }
+    if (i >= 5 && s.hollow) { await d.say('laohegong', '闸这一段……空的。去年新砌的条石，底下怎么会空？'); }
   }
-  g.player.locked = false; g.cinematicCam = false;
+  const h = d.g.npc('laohegong'); if (h) h.home = [h.x, h.y];
+  g.player.locked = false;
   return right;
 }
 
@@ -52,7 +49,7 @@ export async function hegongzhang(d) {
   const p = ui.showPanel('河工账', html);
   const picked = await new Promise(res => { p.querySelectorAll('.row2').forEach(r => r.onclick = () => res(parseInt(r.dataset.i, 10))); p.querySelector('.close').addEventListener('click', () => res(-1)); });
   ui.closePanel();
-  return picked; // 3 = 闸底条石换新（300×2=600，账上 800；更要紧的是：三月换闸底）
+  return picked;
 }
 
 export function waitUntil(fn, timeout = 5000) { return new Promise(res => { const t0 = performance.now(); const tick = () => { if (fn() || performance.now() - t0 > timeout) res(); else requestAnimationFrame(tick); }; tick(); }); }

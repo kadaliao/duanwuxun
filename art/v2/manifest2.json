@@ -1,0 +1,199 @@
+{
+ "items": [
+  {
+   "out": "art/raw/v2/sheet_changboxi.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_changboxi.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_maningyuan.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_maningyuan.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_huzongxian.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_huzongxian.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_fenglaosi.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_fenglaosi.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_ayang.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_ayang.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_laohegong.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_laohegong.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_qidazhu.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_qidazhu.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_jiangqianhu.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_jiangqianhu.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_qianguanjia.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_qianguanjia.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_minzhuang.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_minzhuang.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_villager_m.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_villager_m.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_villager_m2.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_villager_m2.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_villager_f.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_villager_f.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_villager_f2.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_villager_f2.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_villager_old.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_villager_old.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_villager_child.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_villager_child.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_soldier.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_soldier.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_soldier_torch.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_soldier_torch.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_chaiyi.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_chaiyi.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_boatman.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_boatman.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_merchant.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_merchant.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_townsman.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_townsman.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_monk.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_monk.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_qinbing.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_qinbing.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/sheet_qijun.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/sheet_qijun.txt",
+   "transparent": true
+  },
+  {
+   "out": "art/raw/v2/cg_boat.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/cg_boat.txt"
+  },
+  {
+   "out": "art/raw/v2/cg_banquet.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/cg_banquet.txt"
+  },
+  {
+   "out": "art/raw/v2/cg_shen.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/cg_shen.txt"
+  },
+  {
+   "out": "art/raw/v2/cg_inn.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/cg_inn.txt"
+  },
+  {
+   "out": "art/raw/v2/cg_breach.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/cg_breach.txt"
+  },
+  {
+   "out": "art/raw/v2/cg_temple_dawn.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/cg_temple_dawn.txt"
+  },
+  {
+   "out": "art/raw/v2/cg_hu_dike.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/cg_hu_dike.txt"
+  },
+  {
+   "out": "art/raw/v2/cg_yamen_night.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/cg_yamen_night.txt"
+  },
+  {
+   "out": "art/raw/v2/map_county.png",
+   "shape": "landscape",
+   "prompt": "art/v2/prompts/map_county.txt"
+  }
+ ]
+}
