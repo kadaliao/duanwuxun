@@ -6,6 +6,12 @@
 
 ![冯家村](tools/shots/readme/village.jpg)
 
+| | |
+|---|---|
+| ![县衙](tools/shots/readme/yamen.jpg) | ![渡口](tools/shots/readme/pier.jpg) |
+| ![闸口](tools/shots/readme/sluice.jpg) | ![新安江堤](tools/shots/readme/dike.jpg) |
+| ![龙王庙](tools/shots/readme/temple.jpg) | ![后山小路](tools/shots/readme/hillpath.jpg) |
+
 ## 怎么玩
 
 ```
