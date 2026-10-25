@@ -5,6 +5,7 @@ import { CHARS } from './chars.js';
 import { SCRIPT } from './script/index.js';
 import { Stealth } from './script/stealth.js';
 import { SPOTS, SCENES, sceneRoute } from './scenes/index.js';
+import { preloadLooks } from '../engine/sprites.js';
 
 export class Director {
   constructor(game) {
@@ -28,12 +29,13 @@ export class Director {
     g.applySettings();
     g.hasSave = () => !!localStorage.getItem('dwx2_save');
     g.save = () => { localStorage.setItem('dwx2_save', JSON.stringify({ state: g.state.toJSON(), day: this.day, hour: g.clock.hour, phase: this.phase, scene: g.sceneId, px: g.player?.x, py: g.player?.y, ver: 2 })); };
-    g.load = async () => { const s = JSON.parse(localStorage.getItem('dwx2_save') || 'null'); if (!s) return; g.state.load(s.state); if (s.phase === 'night') { this.day = 4; g.ui.showHUD(true); if (!g.player) g.spawnPlayer('town', 0, 0); g.r.fade(1); this.startNight(); return; } await this.startDay(s.day, { hour: s.hour, scene: s.scene, px: s.px, py: s.py, loaded: true }); };
+    g.load = async () => { const s = JSON.parse(localStorage.getItem('dwx2_save') || 'null'); if (!s) return; await this.preload(); g.state.load(s.state); if (s.phase === 'night') { this.day = 4; g.ui.showHUD(true); if (!g.player) g.spawnPlayer('town', 0, 0); g.r.fade(1); this.startNight(); return; } await this.startDay(s.day, { hour: s.hour, scene: s.scene, px: s.px, py: s.py, loaded: true }); };
     g.clock.set(9); g.applyTime(9, 0);
     g.ui.showTitle({ canContinue: g.hasSave(), onStart: () => this.newGame(), onContinue: () => g.load() });
   }
+  preload() { const looks = new Set(['player', 'boat', 'soldier_torch', 'villager_m', 'villager_m2', 'villager_f', 'villager_f2', 'villager_old', 'villager_child', 'qijun']); for (const c of Object.values(CHARS)) if (c.look) looks.add(c.look); return preloadLooks([...looks]).then(() => Promise.all(Object.values(this.g.views).map(v => v.load()))); }
   async newGame() {
-    const g = this.g; g.state.reset();
+    const g = this.g; g.state.reset(); this.preload();
     await SCRIPT.intro(this);
     await this.startDay(1, {});
   }

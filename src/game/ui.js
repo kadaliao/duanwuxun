@@ -45,7 +45,9 @@ export class UI {
     this.$('.hud-quests').addEventListener('click', e => { const q = e.target.closest('.q'); if (q && q.dataset.id) { this.g.state.tracked = q.dataset.id; this.refreshQuests(); this.g.audio.click(); } });
     this.$('#bigmap').addEventListener('click', e => { if (e.target === this.$('#bigmap')) this.toggleBigMap(false); });
     this.setupTouch(); this.dlgState = null; this.debug = false;
+    this.painted = new Set(); fetch('assets/img/portraits2/index.json').then(r => r.ok ? r.json() : []).then(l => { this.painted = new Set(l); }).catch(() => {});
   }
+  portraitURL(who, cut) { const id = PORTRAITS[who]; if (!id) return null; if (this.painted.has(id)) return `assets/img/portraits2/${id}.webp`; return `assets/img/portraits/${id}${cut ? '-cut' : ''}.webp`; }
   // ───── 标题 ─────
   showTitle({ canContinue, onStart, onContinue }) {
     const t = el('div', '', `
@@ -137,7 +139,7 @@ export class UI {
       const who = node.who; const ch = CHARS[who];
       const por = this.dlg.querySelector('.portrait');
       if (who && who !== 'narr' && ch) {
-        if (PORTRAITS[who]) { por.className = 'portrait'; por.style.backgroundImage = `url(assets/img/portraits/${PORTRAITS[who]}-cut.webp)`; por.style.display = ''; }
+        if (PORTRAITS[who]) { por.className = 'portrait' + (this.painted.has(PORTRAITS[who]) ? ' painted' : ''); por.style.backgroundImage = `url(${this.portraitURL(who, true)})`; por.style.display = ''; }
         else if (ch.look && META[ch.look]) { por.className = 'portrait sprite'; por.style.backgroundImage = `url(${frameDataURL(META[ch.look], 0, 0)})`; por.style.display = ''; }
         else por.style.display = 'none';
       } else por.style.display = 'none';
@@ -205,7 +207,7 @@ export class UI {
     const clues = st.clues.length ? st.clues.map(c => row(c.kind || '线索', `<b>${c.title}</b>　${c.text}`)).join('') : '<div class="empty">还没有记下什么。留心别人说的话。</div>';
     const ledger = st.ledger.length ? st.ledger.map(l => row(l.kind, `<b>${l.who}</b>　${l.text}`, true)).join('') : '<div class="empty">暗账空着。欠了谁、谁欠你、谁的把柄在你手里——都记在这里。</div>';
     const items = st.items.length ? st.items.map(i => row('物', ITEMS[i] ? `<b>${ITEMS[i].name}</b>　${ITEMS[i].desc}` : i)).join('') : '<div class="empty">身上没有什么。</div>';
-    const people = st.people.length ? `<div class="people">${st.people.map(id => { const c = CHARS[id]; if (!c) return ''; const pic = PORTRAITS[id] ? `style="background-image:url(assets/img/portraits/${PORTRAITS[id]}.webp)"` : c.look && META[c.look] ? `class="pic sprite" style="background-image:url(${frameDataURL(META[c.look], 0, 0)})"` : ''; return `<div class="person"><div class="pic" ${pic}></div><b>${c.name}</b><small>${c.title || ''}</small><i>${c.pan || ''}</i></div>`; }).join('')}</div>` : '<div class="empty">还没见过谁。</div>';
+    const people = st.people.length ? `<div class="people">${st.people.map(id => { const c = CHARS[id]; if (!c) return ''; const pic = PORTRAITS[id] ? `class="pic ${this.painted.has(PORTRAITS[id]) ? 'painted' : ''}" style="background-image:url(${this.portraitURL(id, false)})"` : c.look && META[c.look] ? `class="pic sprite" style="background-image:url(${frameDataURL(META[c.look], 0, 0)})"` : ''; return `<div class="person"><div class="pic" ${pic}></div><b>${c.name}</b><small>${c.title || ''}</small><i>${c.pan || ''}</i></div>`; }).join('')}</div>` : '<div class="empty">还没见过谁。</div>';
     const v = st.vars; const stats = row('村民信任', '●'.repeat(Math.max(0, v.trust)) + '○'.repeat(Math.max(0, 5 - v.trust)) + `　${trustWord(v.trust)}`) + row('胡部堂', '●'.repeat(Math.max(0, v.hu)) + '○'.repeat(Math.max(0, 4 - v.hu))) + row('树敌', '●'.repeat(Math.max(0, v.xian)) + `　${v.xian >= 3 ? '已经有人记着你了' : v.xian > 0 ? '有人看你不顺眼' : '没人注意你'}`);
     this.showPanel('账簿', '', { tabs: [{ title: '线索', html: stats + '<h3>记下的事</h3>' + clues }, { title: '暗账', html: ledger }, { title: '随身', html: items }, { title: '人物', html: people }] });
   }
@@ -226,7 +228,12 @@ export class UI {
   // 舆图：各处与去路
   toggleBigMap(force) {
     const on = force != null ? force : !this.bigMapOpen; this.bigMapOpen = on; const bm = this.$('#bigmap'); bm.classList.toggle('show', on); this.modal = on || this.panelOpen || this.dlg.classList.contains('show');
-    if (on) { this.g.audio.paper(); const g = this.g; const here = g.sceneId; bm.innerHTML = `<div class="bm-sheet"><div class="bm-title">淳安舆图</div><div class="bm-grid">${Object.entries(SCENES).map(([id, s]) => `<div class="bm-item ${id === here ? 'here' : ''}">${s.name}${id === here ? '<small>你在这里</small>' : ''}</div>`).join('')}</div><div class="bm-foot">M / Esc 关</div></div>`; }
+    if (!on) return;
+    this.g.audio.paper(); const g = this.g; const here = g.sceneId;
+    const q = g.director.trackedQuest(); const t = q && q.target; let tScene = null;
+    if (t) { if (t.npc) tScene = g.npc(t.npc)?.scene; else if (t.hs) tScene = g.director.hotspots.find(h => h.id === t.hs)?.scene; else if (t.spot) tScene = g.director.pos(t.spot).scene; else if (t.scene) tScene = t.scene; }
+    const marks = Object.entries(SCENES).map(([id, s]) => `<div class="bm-mark ${id === here ? 'here' : ''} ${id === tScene ? 'target' : ''}" style="left:${s.map[0]}%;top:${s.map[1]}%"><i></i><span>${s.name}</span></div>`).join('');
+    bm.innerHTML = `<div class="bm-sheet"><div class="bm-img" style="background-image:url(assets/img/ui/map.webp)">${marks}</div><div class="bm-foot">● 你在这里　◆ 要事　　M / Esc 关</div></div>`;
   }
   setupTouch() {
     const stick = this.$('#stick'), knob = stick.firstElementChild; const inp = this.g.input; let active = null;

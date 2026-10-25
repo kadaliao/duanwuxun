@@ -45717,6 +45717,9 @@ void main() {
   var cache = /* @__PURE__ */ new Map();
   var loader = new TextureLoader();
   var META = {};
+  async function preloadLooks(ids) {
+    await Promise.all(ids.map((id) => loadLook(id)));
+  }
   function loadLook(id) {
     if (cache.has(id)) return cache.get(id);
     const p = (async () => {
@@ -46407,6 +46410,7 @@ void main() {
     village: {
       name: "\u51AF\u5BB6\u6751",
       img: "village",
+      map: [38, 58],
       size: [1536, 1024],
       charH: 92,
       ground: "mud",
@@ -46439,6 +46443,7 @@ void main() {
     fields: {
       name: "\u5824\u4E0B\u7A3B\u7530",
       img: "fields",
+      map: [52, 52],
       size: [1536, 1024],
       charH: 72,
       ground: "earth",
@@ -46466,6 +46471,7 @@ void main() {
     dike: {
       name: "\u65B0\u5B89\u6C5F\u5824",
       img: "dike",
+      map: [45, 36],
       size: [1536, 1024],
       charH: 80,
       ground: "stone",
@@ -46489,6 +46495,7 @@ void main() {
     sluice: {
       name: "\u95F8\u53E3",
       img: "sluice",
+      map: [56, 38],
       size: [1536, 1024],
       charH: 84,
       ground: "stone",
@@ -46518,6 +46525,7 @@ void main() {
     pier: {
       name: "\u6E21\u53E3",
       img: "pier",
+      map: [70, 34],
       size: [1536, 1024],
       charH: 84,
       ground: "stone",
@@ -46541,6 +46549,7 @@ void main() {
     yamen: {
       name: "\u53BF\u8859",
       img: "yamen",
+      map: [78, 50],
       size: [1536, 1024],
       charH: 92,
       ground: "stone",
@@ -46561,6 +46570,7 @@ void main() {
     town: {
       name: "\u6DF3\u5B89\u53BF\u57CE",
       img: "town",
+      map: [74, 56],
       size: [1536, 1024],
       charH: 92,
       ground: "stone",
@@ -46579,6 +46589,7 @@ void main() {
     hillpath: {
       name: "\u540E\u5C71\u5C0F\u8DEF",
       img: "hillpath",
+      map: [28, 70],
       size: [1024, 1536],
       charH: 70,
       ground: "stone",
@@ -46597,6 +46608,7 @@ void main() {
     temple: {
       name: "\u9F99\u738B\u5E99",
       img: "temple",
+      map: [20, 80],
       size: [1536, 1024],
       charH: 90,
       ground: "stone",
@@ -46805,6 +46817,17 @@ void main() {
       this.setupTouch();
       this.dlgState = null;
       this.debug = false;
+      this.painted = /* @__PURE__ */ new Set();
+      fetch("assets/img/portraits2/index.json").then((r) => r.ok ? r.json() : []).then((l) => {
+        this.painted = new Set(l);
+      }).catch(() => {
+      });
+    }
+    portraitURL(who, cut) {
+      const id = PORTRAITS[who];
+      if (!id) return null;
+      if (this.painted.has(id)) return `assets/img/portraits2/${id}.webp`;
+      return `assets/img/portraits/${id}${cut ? "-cut" : ""}.webp`;
     }
     // ───── 标题 ─────
     showTitle({ canContinue, onStart, onContinue }) {
@@ -47072,8 +47095,8 @@ void main() {
         const por = this.dlg.querySelector(".portrait");
         if (who && who !== "narr" && ch) {
           if (PORTRAITS[who]) {
-            por.className = "portrait";
-            por.style.backgroundImage = `url(assets/img/portraits/${PORTRAITS[who]}-cut.webp)`;
+            por.className = "portrait" + (this.painted.has(PORTRAITS[who]) ? " painted" : "");
+            por.style.backgroundImage = `url(${this.portraitURL(who, true)})`;
             por.style.display = "";
           } else if (ch.look && META[ch.look]) {
             por.className = "portrait sprite";
@@ -47336,7 +47359,7 @@ void main() {
       const people = st.people.length ? `<div class="people">${st.people.map((id) => {
         const c = CHARS[id];
         if (!c) return "";
-        const pic = PORTRAITS[id] ? `style="background-image:url(assets/img/portraits/${PORTRAITS[id]}.webp)"` : c.look && META[c.look] ? `class="pic sprite" style="background-image:url(${frameDataURL(META[c.look], 0, 0)})"` : "";
+        const pic = PORTRAITS[id] ? `class="pic ${this.painted.has(PORTRAITS[id]) ? "painted" : ""}" style="background-image:url(${this.portraitURL(id, false)})"` : c.look && META[c.look] ? `class="pic sprite" style="background-image:url(${frameDataURL(META[c.look], 0, 0)})"` : "";
         return `<div class="person"><div class="pic" ${pic}></div><b>${c.name}</b><small>${c.title || ""}</small><i>${c.pan || ""}</i></div>`;
       }).join("")}</div>` : '<div class="empty">\u8FD8\u6CA1\u89C1\u8FC7\u8C01\u3002</div>';
       const v = st.vars;
@@ -47377,12 +47400,21 @@ void main() {
       const bm = this.$("#bigmap");
       bm.classList.toggle("show", on);
       this.modal = on || this.panelOpen || this.dlg.classList.contains("show");
-      if (on) {
-        this.g.audio.paper();
-        const g = this.g;
-        const here = g.sceneId;
-        bm.innerHTML = `<div class="bm-sheet"><div class="bm-title">\u6DF3\u5B89\u8206\u56FE</div><div class="bm-grid">${Object.entries(SCENES).map(([id, s]) => `<div class="bm-item ${id === here ? "here" : ""}">${s.name}${id === here ? "<small>\u4F60\u5728\u8FD9\u91CC</small>" : ""}</div>`).join("")}</div><div class="bm-foot">M / Esc \u5173</div></div>`;
+      if (!on) return;
+      this.g.audio.paper();
+      const g = this.g;
+      const here = g.sceneId;
+      const q = g.director.trackedQuest();
+      const t = q && q.target;
+      let tScene = null;
+      if (t) {
+        if (t.npc) tScene = g.npc(t.npc)?.scene;
+        else if (t.hs) tScene = g.director.hotspots.find((h) => h.id === t.hs)?.scene;
+        else if (t.spot) tScene = g.director.pos(t.spot).scene;
+        else if (t.scene) tScene = t.scene;
       }
+      const marks = Object.entries(SCENES).map(([id, s]) => `<div class="bm-mark ${id === here ? "here" : ""} ${id === tScene ? "target" : ""}" style="left:${s.map[0]}%;top:${s.map[1]}%"><i></i><span>${s.name}</span></div>`).join("");
+      bm.innerHTML = `<div class="bm-sheet"><div class="bm-img" style="background-image:url(assets/img/ui/map.webp)">${marks}</div><div class="bm-foot">\u25CF \u4F60\u5728\u8FD9\u91CC\u3000\u25C6 \u8981\u4E8B\u3000\u3000M / Esc \u5173</div></div>`;
     }
     setupTouch() {
       const stick = this.$("#stick"), knob = stick.firstElementChild;
@@ -49456,6 +49488,7 @@ void main() {
       g.load = async () => {
         const s = JSON.parse(localStorage.getItem("dwx2_save") || "null");
         if (!s) return;
+        await this.preload();
         g.state.load(s.state);
         if (s.phase === "night") {
           this.day = 4;
@@ -49471,9 +49504,15 @@ void main() {
       g.applyTime(9, 0);
       g.ui.showTitle({ canContinue: g.hasSave(), onStart: () => this.newGame(), onContinue: () => g.load() });
     }
+    preload() {
+      const looks = /* @__PURE__ */ new Set(["player", "boat", "soldier_torch", "villager_m", "villager_m2", "villager_f", "villager_f2", "villager_old", "villager_child", "qijun"]);
+      for (const c of Object.values(CHARS)) if (c.look) looks.add(c.look);
+      return preloadLooks([...looks]).then(() => Promise.all(Object.values(this.g.views).map((v) => v.load())));
+    }
     async newGame() {
       const g = this.g;
       g.state.reset();
+      this.preload();
       await SCRIPT.intro(this);
       await this.startDay(1, {});
     }

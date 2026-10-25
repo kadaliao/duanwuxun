@@ -26,6 +26,12 @@ const frames = rows.map(list => {
   const big = Math.max(...merged.map(m => m.n)); return merged.filter(m => m.n > big * 0.15);
 });
 frames.forEach((f, r) => console.log('row', r, f.length, 'frames', f.map(m => `${m.x1 - m.x0}x${m.y1 - m.y0}`).join(' ')));
+// GRID=1：按固定网格切（船这类相邻会粘连的图）
+if (process.env.GRID) {
+  const cellW = W / COLS, cellH = H / ROWS;
+  for (let r = 0; r < ROWS; r++) { frames[r] = []; for (let c = 0; c < COLS; c++) { let x0 = W, x1 = -1, y0 = H, y1 = -1, n = 0; for (let y = Math.floor(r * cellH); y < Math.floor((r + 1) * cellH); y++) for (let x = Math.floor(c * cellW); x < Math.floor((c + 1) * cellW); x++) { if (A(x, y) < 40) continue; n++; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; } if (n > 30) frames[r].push({ x0, x1, y0, y1, n }); } }
+  frames.forEach((f, r) => console.log('grid row', r, f.length, 'frames'));
+}
 const cols = Math.max(...frames.map(f => f.length));
 const cw = Math.max(...frames.flat().map(m => m.x1 - m.x0 + 1)) + 8, ch = Math.max(...frames.flat().map(m => m.y1 - m.y0 + 1)) + 6;
 const out = new PNG({ width: cw * cols, height: ch * ROWS });
