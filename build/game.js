@@ -45999,15 +45999,29 @@ void main() {
       const v = this.sceneView;
       if (!v) return;
       this.depth = this.noWater ? 0 : v.depthAt(this.x, this.y);
+      this.updateDir();
+      let mirror = false;
       if (this.moving) {
-        const nf = (this.look ? this.look.frames : 6) - 1;
-        this.frame = 1 + Math.floor(this.animDist / 20) % Math.max(1, nf);
+        const nf = Math.max(1, (this.look ? this.look.frames : 6) - 1);
+        const k = Math.floor(this.animDist / 18);
+        if (this.dir === 2 || this.look && this.look.sideCycle) {
+          const cyc = this.look && this.look.sideCycle ? this.look.sideCycle : null;
+          if (cyc) this.frame = cyc[k % cyc.length];
+          else {
+            const n = nf * 2 - 2;
+            const i = k % n;
+            this.frame = 1 + (i < nf ? i : n - i);
+          }
+        } else {
+          const i = k % (nf * 2);
+          this.frame = 1 + i % nf;
+          mirror = i >= nf;
+        }
       } else {
         this.frame = 0;
         this.animDist = 0;
       }
-      this.updateDir();
-      this.setFrame(this.dir, this.frame, this.flip);
+      this.setFrame(this.dir, this.frame, this.flip !== mirror);
       const h = this.h;
       const w = h * (this.look ? this.look.cw / this.look.ch : 0.4);
       const feet = this.look ? this.look.feet * h / this.look.ch : 0;
