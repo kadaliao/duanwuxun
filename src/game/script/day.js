@@ -216,12 +216,12 @@ async function talkQian(d, e, day) {
 function setupDay1(d, loaded) {
   const g = d.g, st = g.state;
   if (!st.has('tamiao')) {
-    const ma = d.place('maningyuan', ['fields', 1000, 500], { face: [0, 1] });
+    const ma = d.place('maningyuan', ['fields', 1000, 492], { face: [0, 1] });
     const jiang = d.place('jiangqianhu', ['fields', 1060, 506], { face: [0, 1], look: 'jiangqianhu' });
-    const soldiers = []; for (let i = 0; i < 5; i++) soldiers.push(d.place('sold' + i, ['fields', 930 + i * 38, 548 + (i % 2) * 14], { look: 'soldier', name: '号衣兵' }));
+    const soldiers = []; for (let i = 0; i < 5; i++) soldiers.push(d.place('sold' + i, ['fields', 930 + i * 38, 545 + (i % 2) * 14], { look: 'soldier', name: '号衣兵' }));
     const feng = d.npc('fenglaosi'), ayang = d.npc('ayang'), qi = d.npc('qidazhu');
     d.move(feng, ['fields', 1085, 578]); feng.ai = null; d.move(ayang, ['fields', 1115, 582]); ayang.ai = null; d.move(qi, ['fields', 1150, 548]); qi.ai = null; qi.facing.set(-1, -0.3);
-    d.trigger('tamiao', ['fields', 1080, 510], 170, async () => {
+    d.trigger('tamiao', ['fields', 1100, 495], 170, async () => {
       g.player.locked = true; await d.lookAt(['fields', 1030, 540], 0.8);
       g.audio.setMood('tense');
       await d.narr('还没走到堤上，就听见了哭声。一队兵正在田里踩秧苗。挖开的水渠里，水往外淌，淌到哪里，哪里的秧苗就倒一片。');
@@ -238,7 +238,7 @@ function setupDay1(d, loaded) {
       ]);
       st.set('tamiao', a); st.flag('tamiao');
       if (a === 'stall') {
-        const p = d.pos(['fields', 1000, 470]); g.player.goTo(p.x, p.y); await waitUntil(() => !g.player.path, 4000);
+        const p = d.pos(['fields', 1000, 480]); g.player.goTo(p.x, p.y); await waitUntil(() => !g.player.path, 4000);
         await d.say('player', '户部奉旨核算田亩。这一片田的亩数、等则、业主，都还没有核清。苗一踏，田的等则就变了，账就没法核了。马府台，等下官核完了，再踏不迟。');
         await d.narr('马宁远低头看着你，看了很久。');
         await d.say('maningyuan', '程大人要核，那就核。[[核完了，再踏::他没说不踏。]]。');
@@ -256,7 +256,7 @@ function setupDay1(d, loaded) {
         st.set('trust', 0);
       }
       d.ledger('jiang_face', '被握', '蒋千户', '踏苗那天，他在马宁远身后，把你的脸看了很久。');
-      const out = d.pos(['fields', 1500, 505]);
+      const out = d.pos(['fields', 1500, 478]);
       for (const e of [ma, jiang, ...soldiers]) { e.ai = null; e.goTo(out.x, out.y, () => { e.visible = false; }); }
       const home = d.pos('fengHome');
       setTimeout(() => { d.move(feng, ['village', home.x / 2 - 60, home.y / 2 + 10]); d.move(ayang, ['village', home.x / 2 + 30, home.y / 2 + 30]); d.move(qi, 'fields.qi'); feng.ai = null; }, 6000);
@@ -280,8 +280,8 @@ function setupDay2(d, loaded) {
       await d.say('laohegong', '[[汛期放假？::汛期，正是堤上要人的时候。::c_holiday]]我守了一辈子堤，没听说过！');
       await d.say('chaiyi', '老吴头，县太爷的令，你跟我嚷有什么用？');
       d.clue('c_holiday');
-      const out = d.pos(['village', 1390, 720]); cy.goTo(out.x, out.y, () => cy.visible = false);
-      const n = d.pos(['village', 1030, 200]); h.goTo(n.x, n.y, () => { d.move(h, 'dike.top'); h.ai = null; });
+      const out = d.pos(['village', 1500, 830]); cy.goTo(out.x, out.y, () => cy.visible = false);
+      const n = d.pos(['village', 1070, 200]); h.goTo(n.x, n.y, () => { d.move(h, 'dike.top'); h.ai = null; });
       g.player.locked = false;
     });
   }

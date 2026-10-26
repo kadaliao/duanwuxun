@@ -10,10 +10,11 @@ export class UI {
     this.root.innerHTML = `
       <div id="hud" style="display:none">
         <div class="hud-time"><div class="day">端午前三日</div><div class="clock"><div class="sc">辰时<small></small></div><div class="place">淳安</div><div class="incense"><i></i></div></div></div>
-        <div class="hud-right"><button data-act="journal">账簿<span class="k">J</span></button><button data-act="map">舆图<span class="k">M</span></button><button data-act="menu">卷宗<span class="k">Esc</span></button></div>
+        <div class="hud-right"><button data-act="auto" class="auto">自动赶路<span class="k">T</span></button><button data-act="journal">账簿<span class="k">J</span></button><button data-act="map">舆图<span class="k">M</span></button><button data-act="menu">卷宗<span class="k">Esc</span></button></div>
         <div class="hud-quests"></div>
         <div class="hud-stats"></div>
-        <div class="hud-hint"><kbd>WASD</kbd>走 <kbd>Shift</kbd>跑 <kbd>C</kbd>潜行 <kbd>空格</kbd>互动 <kbd>滚轮</kbd>远近 <kbd>M</kbd>舆图 <kbd>J</kbd>账簿</div>
+        <div id="autostate"></div>
+        <div class="hud-hint"><kbd>WASD</kbd>走 <kbd>Shift</kbd>跑 <kbd>C</kbd>潜行 <kbd>空格</kbd>互动 <kbd>滚轮</kbd>远近 <kbd>M</kbd>舆图 <kbd>J</kbd>账簿 <kbd>T</kbd>自动赶路</div>
         <div id="prompt"><div class="name"></div><div class="key">互动</div></div>
         <div id="qmark"><div class="qm-title"></div><div class="qm-dia">◆</div></div>
         <div id="qarrow"><div class="qa-body"><span class="qa-t"></span><span class="qa-d"></span></div><div class="qa-tip"></div></div>
@@ -35,7 +36,7 @@ export class UI {
     this.hud = this.$('#hud'); this.dlg = this.$('#dlg'); this.overlay = this.$('#overlay'); this.panels = this.$('#panels'); this.cg = this.$('#cg');
     this.root.addEventListener('pointerdown', e => { this.pointerOnUI = !!e.target.closest('#ui > *:not(#hud):not(#debug)') || !!e.target.closest('.hud-right, .hud-quests, .hud-stats, #stick, #actbtn'); });
     this.root.addEventListener('pointerup', () => setTimeout(() => this.pointerOnUI = false, 0));
-    this.$('.hud-right').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; if (b.dataset.act === 'journal') this.openJournal(); if (b.dataset.act === 'menu') this.openMenu(); if (b.dataset.act === 'map') this.toggleBigMap(); });
+    this.$('.hud-right').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; if (b.dataset.act === 'journal') this.openJournal(); if (b.dataset.act === 'menu') this.openMenu(); if (b.dataset.act === 'map') this.toggleBigMap(); if (b.dataset.act === 'auto') this.g.toggleAuto(); });
     window.addEventListener('keydown', e => {
       if (e.key === 'Escape') { if (this.bigMapOpen) this.toggleBigMap(false); else if (this.panelOpen) this.closePanel(); else if (!this.modal && this.hud.style.display !== 'none') this.openMenu(); }
       if ((e.key === 'j' || e.key === 'J') && !this.modal) this.openJournal();
@@ -117,6 +118,7 @@ export class UI {
     const m = g.input.mouse; const sp = g.r.toScene(m.x, m.y); ctx.fillStyle = '#fff'; ctx.fillText(`${(sp.x / v.k).toFixed(0)}, ${(sp.y / v.k).toFixed(0)}  walk=${v.nav.walkable(sp.x, sp.y)} elev=${v.elevAt(sp.x, sp.y).toFixed(2)}`, m.x + 12, m.y + 20);
     if (g.player) ctx.fillText(`player ${(g.player.x / v.k).toFixed(0)},${(g.player.y / v.k).toFixed(0)} depth ${g.player.depth.toFixed(2)}`, 20, c.height - 60);
   }
+  setAuto(on, state) { const b = this.$('.hud-right .auto'); b.classList.toggle('on', on); const s = this.$('#autostate'); s.classList.toggle('show', on); s.innerHTML = on ? `<i></i>自动赶路 · ${state || ''}` : ''; }
   setStats(list) { this.$('.hud-stats').innerHTML = list.map(s => `<div class="st ${s.red ? 'red' : ''}">${s.k}<b>${s.v}</b></div>`).join(''); }
   refreshQuests() {
     const qs = Object.values(this.g.state.quests).filter(q => !q.done || Date.now() - (q.doneAt || 0) < 6000).slice(-5);
@@ -220,7 +222,7 @@ export class UI {
       <label><input type="checkbox" data-s="music" ${s.music ? 'checked' : ''}> 配乐</label>
       <label>音量 <input type="range" min="0" max="1" step="0.05" value="${s.volume}" data-s="volume"></label>
       <label>文字速度 <input type="range" min="0.5" max="3" step="0.25" value="${s.textSpeed}" data-s="textSpeed"></label>
-      <h3>操作</h3>WASD / 方向键 走　Shift 跑　C 潜行　空格 互动　滚轮 远近　J 账簿　M 舆图　G 鸣锣（有锣时）`;
+      <h3>操作</h3>WASD / 方向键 走　Shift 跑　C 潜行　空格 互动　滚轮 远近　J 账簿　M 舆图　T 自动赶路（朝要事目标走）　G 鸣锣（有锣时）`;
     const p = this.showPanel('卷宗', html);
     p.querySelector('[data-a=save]').onclick = () => { g.save(); this.toast('已存档'); };
     p.querySelector('[data-a=load]').onclick = () => { this.closePanel(); g.load(); };

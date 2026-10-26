@@ -32,6 +32,7 @@ export class Game {
     this.director = new Director(this);
     this.paused = false; this.t = 0; this.last = performance.now(); this.interactCooldown = 0; this.timeScale = 1; this.hour = 9; this.dark = 0;
     this.lightsOn = 0; this.cinematicCam = false; this.switching = false;
+    this.autoWalk = false; this.autoT = 0; this.autoState = '';
   }
   // ───── 场景 ─────
   async goScene(id, x, y, { snap = true, fade = true } = {}) {
@@ -43,7 +44,7 @@ export class Game {
     if (this.view) { this.r.scene.remove(this.view.group); this.r.lightScene.remove(this.view.lightGroup); for (const e of this.entities) if (e.scene === from) this.r.scene.remove(e.group); }
     this.sceneId = id; this.view = view; this.r.bounds = [view.W, view.H];
     this.r.scene.add(view.group); this.r.lightScene.add(view.lightGroup);
-    if (this.player) { this.player.scene = id; if (x != null) { const w = view.nav.nearestWalkable(x, y, 600) || [x, y]; this.player.x = w[0]; this.player.y = w[1]; } this.player.path = null; this.player.moving = false; for (const f of this.director.followers) { if (f.dead || f.arrived) continue; f.scene = id; f.x = this.player.x + (Math.random() - 0.5) * 80; f.y = this.player.y + 20 + Math.random() * 30; f.path = null; } }
+    if (this.player) { this.player.scene = id; if (x != null) { const w = view.nav.nearestWalkable(x, y, 600) || [x, y]; this.player.x = w[0]; this.player.y = w[1]; } this.player.path = null; this.player.autoPath = false; this.autoT = 0; this.player.moving = false; for (const f of this.director.followers) { if (f.dead || f.arrived) continue; f.scene = id; f.x = this.player.x + (Math.random() - 0.5) * 80; f.y = this.player.y + 20 + Math.random() * 30; f.path = null; } }
     for (const e of this.entities) if (e.scene === id) { this.r.scene.add(e.group); e.update(0); }
     view.setLights(this.lightsOn, this.t); this.flood.applyScene(view);
     if (this.player) this.r.follow(this.player.x, this.player.y - view.charH(this.player.y) * 0.4, true);
@@ -111,15 +112,37 @@ export class Game {
       const pt = this.r.toScene(inp.mouse.x, inp.mouse.y);
       const ent = this.pickEntity(pt.x, pt.y);
       if (ent && ent.interact) this.walkToAndInteract(ent);
-      else { const hs = this.pickHotspot(pt.x, pt.y); if (hs) this.walkToAndInteract(hs); else { const tgt = this.view.nav.nearestWalkable(pt.x, pt.y, 400); if (tgt) { p.goTo(tgt[0], tgt[1]); this.ui.clickMarker(tgt[0], tgt[1]); } } }
+      else { const hs = this.pickHotspot(pt.x, pt.y); if (hs) this.walkToAndInteract(hs); else { const tgt = this.view.nav.nearestWalkable(pt.x, pt.y, 400); if (tgt) { if (this.autoWalk) this.toggleAuto(false); p.goTo(tgt[0], tgt[1]); this.ui.clickMarker(tgt[0], tgt[1]); } } }
     }
     if (this.interactCooldown > 0) { this.interactCooldown -= dt; inp.hit('space'); inp.hit('enter'); inp.hit('f'); }
     else if (inp.hit('space') || inp.hit('enter') || inp.hit('f')) { const tgt = this.nearestInteractable(); if (tgt) this.director.interact(tgt); }
     if (inp.hit('g')) this.director.useGong();
+    if (inp.hit('t')) this.toggleAuto();
+    if (this.autoWalk) this.autoStep(dt, !!(dx || dz));
     // 出口
     const ex = this.view.exitAt(p.x, p.y);
     if (!ex) this.exitArmed = true;
     else if (this.exitArmed && !this.director.busy && !this.director.exitsLocked) { this.exitArmed = false; this.useExit(ex); }
+  }
+  toggleAuto(force) {
+    this.autoWalk = force != null ? force : !this.autoWalk; this.autoT = 0; this.autoState = this.autoWalk ? '寻路中' : '';
+    if (!this.autoWalk && this.player && this.player.autoPath) { this.player.path = null; this.player.autoPath = false; }
+    this.ui.toast(this.autoWalk ? '<b>自动赶路</b>朝要事目标走。按 T 或任意方向键停下' : '自动赶路 关', this.autoWalk ? 'dark' : '');
+    this.ui.setAuto(this.autoWalk, this.autoState);
+  }
+  // 自动赶路：每隔一会儿朝追踪的要事目标寻路；到了就停
+  autoStep(dt, manual) {
+    const p = this.player, d = this.director;
+    if (manual) { this.toggleAuto(false); return; }
+    if (d.busy || this.ui.modal) return;
+    this.autoT -= dt; if (this.autoT > 0 && p.path) return; this.autoT = 0.8;
+    const q = d.trackedQuest(); const t = q && d.resolveTarget(q.target);
+    if (!t) { this.autoState = '没有要事目标'; this.ui.setAuto(true, this.autoState); p.path = null; return; }
+    const reach = this.view.charH(p.y) * (t.far ? 0.3 : 0.6);
+    if (!t.far && Math.hypot(t.x - p.x, (t.y - p.y) * 1.3) < reach) { this.autoState = '已到：' + q.title; this.ui.setAuto(true, this.autoState); p.path = null; p.moving = false; return; }
+    const tgt = this.view.nav.nearestWalkable(t.x, t.y, 500); if (!tgt) { this.autoState = '过不去'; this.ui.setAuto(true, this.autoState); return; }
+    if (!p.path || !p.autoPath || Math.hypot(p.autoGoal[0] - tgt[0], p.autoGoal[1] - tgt[1]) > 40) { if (p.goTo(tgt[0], tgt[1])) { p.autoPath = true; p.autoGoal = tgt; } else { this.autoState = '过不去'; this.ui.setAuto(true, this.autoState); return; } }
+    this.autoState = (t.far ? '往' + t.via + '：' : '前往：') + q.title; this.ui.setAuto(true, this.autoState);
   }
   async useExit(ex) {
     if (ex.cond && !ex.cond(this)) { this.exitArmed = true; return; }

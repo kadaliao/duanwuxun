@@ -46439,28 +46439,33 @@ void main() {
       ground: "mud",
       scale: { y0: 0.2, s0: 0.78, y1: 0.95, s1: 1.15 },
       walk: [
-        [[560, 470], [650, 440], [790, 430], [930, 440], [1010, 470], [1040, 520], [1035, 600], [985, 645], [900, 700], [830, 760], [770, 800], [700, 795], [640, 765], [565, 700], [540, 600], [550, 520]],
-        [[930, 475], [985, 475], [1050, 330], [1062, 180], [1020, 180], [988, 330]],
-        [[690, 790], [775, 790], [765, 1024], [645, 1024]],
-        [[1030, 610], [1100, 640], [1300, 690], [1400, 700], [1400, 740], [1280, 740], [1080, 700], [1e3, 650]],
-        [[470, 520], [560, 520], [560, 580], [470, 580]],
-        [[560, 440], [640, 440], [640, 480], [560, 480]]
+        // 村中空地
+        [[560, 440], [640, 420], [780, 400], [940, 420], [1e3, 470], [1010, 560], [980, 640], [900, 720], [800, 780], [700, 800], [600, 760], [540, 660], [520, 540]],
+        // 北去堤上的路
+        [[990, 470], [1040, 470], [1070, 330], [1095, 170], [1040, 160], [1e3, 330]],
+        // 南去后山的路
+        [[700, 790], [800, 790], [760, 900], [720, 1024], [600, 1024], [640, 900]],
+        // 东去稻田的路
+        [[960, 650], [1010, 620], [1100, 700], [1300, 760], [1536, 800], [1536, 860], [1300, 820], [1100, 760], [950, 720]],
+        // 西边场院
+        [[300, 480], [560, 470], [560, 560], [300, 560]]
       ],
-      block: [[[800, 540], [860, 540], [860, 600], [800, 600]]],
+      block: [R(690, 440, 770, 520), R(800, 500, 900, 580)],
       occluders: [
-        { poly: [[540, 250], [700, 230], [900, 250], [990, 350], [980, 480], [900, 540], [760, 560], [660, 545], [600, 500], [540, 420]], base: 560 },
-        { poly: [[930, 590], [1090, 600], [1100, 790], [930, 800]], base: 800 },
-        { poly: [[1020, 320], [1370, 330], [1370, 645], [1020, 650]], base: 650 }
+        { poly: [[540, 250], [700, 230], [900, 250], [990, 350], [980, 470], [900, 520], [760, 530], [660, 520], [600, 470], [540, 420]], base: 525 },
+        { poly: R(930, 600, 1150, 800), base: 795 },
+        { poly: R(1e3, 320, 1370, 650), base: 650 },
+        { poly: R(300, 230, 560, 470), base: 470 }
       ],
       exits: [
-        { to: "dike", poly: R(990, 175, 1080, 235), at: [330, 470], face: [0, -1] },
-        { to: "hillpath", poly: R(630, 990, 790, 1024), at: [760, 920], face: [0, -1] },
-        { to: "fields", poly: R(1370, 690, 1420, 750), at: [430, 760], face: [1, 0] }
+        { to: "dike", poly: R(1030, 150, 1110, 200), at: [330, 430], face: [0, -1] },
+        { to: "hillpath", poly: R(600, 990, 760, 1024), at: [510, 1460], face: [0, -1] },
+        { to: "fields", poly: R(1480, 790, 1536, 870), at: [440, 640], face: [1, 0] }
       ],
-      spots: { enter: [1300, 710], center: [780, 620], well: [850, 570], fengHome: [1130, 610], north: [1e3, 310], south: [730, 820], tree: [740, 560] },
-      doors: [[1130, 610], [1e3, 745], [470, 525], [330, 585], [400, 335], [640, 355], [960, 375], [1180, 365], [280, 475], [560, 325], [900, 335], [1290, 655]],
+      spots: { enter: [1420, 820], center: [780, 620], well: [850, 600], fengHome: [1130, 660], north: [1030, 300], south: [700, 850], tree: [720, 560] },
+      doors: [[1130, 655], [1050, 790], [470, 540], [330, 580], [400, 400], [640, 400], [960, 400], [1180, 380], [280, 480], [560, 360], [900, 350], [1290, 660]],
       lights: [{ x: 1285, y: 490, r: 150, color: 16747056, g: 14 }, { x: 966, y: 700, r: 90, color: 16756832, a: 0.5, g: 8 }],
-      flood: { base: 0.3, max: 1, blur: 3, zones: [{ poly: [[540, 420], [1050, 420], [1060, 560], [1300, 700], [1300, 760], [1e3, 820], [640, 820], [520, 700]], h: 0.55 }, { poly: R(960, 150, 1080, 480), h: 0.45 }, { poly: R(620, 780, 800, 1024), h: 0.5 }, { poly: R(0, 700, 560, 1024), h: 0.9 }, { poly: R(1020, 320, 1370, 650), h: 0.95 }, { poly: R(930, 590, 1090, 800), h: 0.95 }, { poly: R(150, 280, 560, 560), h: 0.95 }, { poly: R(560, 240, 1e3, 420), h: 0.95 }] },
+      flood: { base: 0.3, max: 1, blur: 3, zones: [{ poly: [[540, 420], [1050, 420], [1060, 560], [1300, 700], [1536, 800], [1536, 860], [1300, 830], [1e3, 820], [640, 820], [520, 700]], h: 0.55 }, { poly: R(960, 150, 1100, 480), h: 0.45 }, { poly: R(600, 780, 800, 1024), h: 0.5 }, { poly: R(0, 700, 560, 1024), h: 0.9 }, { poly: R(1e3, 320, 1370, 650), h: 0.95 }, { poly: R(930, 600, 1150, 800), h: 0.95 }, { poly: R(150, 280, 560, 560), h: 0.95 }, { poly: R(560, 240, 1e3, 420), h: 0.95 }] },
       ambience: { river: 0.15 }
     },
     fields: {
@@ -46472,23 +46477,31 @@ void main() {
       ground: "earth",
       scale: { y0: 0.2, s0: 0.72, y1: 0.95, s1: 1.2 },
       walk: [
-        [[1536, 462], [1536, 548], [810, 505], [810, 428]],
-        [[690, 245], [765, 245], [775, 435], [690, 435]],
-        [[810, 428], [810, 505], [430, 475], [400, 428]],
-        [[400, 428], [430, 475], [560, 760], [470, 795], [380, 745], [360, 600]],
-        [[560, 760], [640, 700], [830, 655], [845, 725], [620, 765]],
-        [[830, 655], [1100, 600], [1536, 555], [1536, 645], [1100, 665], [845, 725]],
-        [[900, 505], [1536, 548], [1536, 600], [1100, 600], [900, 560]]
+        // 大路：西门 → 桥 → 往西
+        [[1536, 440], [1300, 455], [1e3, 465], [800, 440], [800, 498], [1e3, 530], [1300, 520], [1536, 508]],
+        [[800, 440], [700, 440], [560, 440], [430, 420], [300, 400], [0, 330], [0, 400], [300, 470], [430, 480], [560, 500], [700, 500], [800, 498]],
+        // 去村里的岔路
+        [[560, 500], [640, 500], [520, 560], [440, 620], [400, 690], [320, 690], [330, 610], [430, 540]],
+        // 渠两岸的田埂：桥 → 闸口
+        [[655, 250], [700, 250], [722, 440], [680, 440]],
+        [[732, 250], [775, 250], [802, 440], [762, 440]],
+        // 桥 → 下游小桥
+        [[680, 500], [722, 500], [782, 640], [740, 640]],
+        [[782, 500], [822, 500], [882, 640], [842, 640]],
+        // 下游小桥与两头的路
+        [[740, 640], [900, 640], [900, 700], [740, 700]],
+        [[900, 640], [1536, 540], [1536, 610], [900, 700]],
+        [[740, 640], [740, 700], [600, 770], [480, 830], [440, 790], [560, 700]]
       ],
       occluders: [{ poly: [[150, 560], [330, 540], [420, 600], [400, 700], [300, 740], [170, 700]], base: 780 }],
       exits: [
-        { to: "town", poly: R(1490, 455, 1536, 560), at: [110, 900], face: [1, 0] },
-        { to: "village", poly: R(380, 700, 480, 800), at: [1330, 715], face: [-1, 0] },
-        { to: "sluice", poly: R(690, 240, 770, 300), at: [420, 930], face: [0, -1] }
+        { to: "town", poly: R(1490, 435, 1536, 515), at: [110, 900], face: [1, 0] },
+        { to: "village", poly: R(320, 640, 410, 700), at: [1420, 820], face: [-1, 0] },
+        { to: "sluice", poly: R(650, 240, 780, 290), at: [420, 930], face: [0, -1] }
       ],
-      spots: { enter: [1400, 505], tamiao: [1e3, 560], tamiaoCam: [950, 500], road: [1150, 505], bridge: [760, 470], westRoad: [500, 455], qi: [1180, 540], lower: [1e3, 620] },
+      spots: { enter: [1400, 478], tamiao: [1e3, 540], tamiaoCam: [950, 500], road: [1150, 492], bridge: [750, 470], westRoad: [450, 450], qi: [1180, 530], lower: [1e3, 600] },
       lights: [{ x: 1500, y: 300, r: 120, color: 16752704, g: 10 }],
-      flood: { base: 0.2, max: 1, blur: 2, zones: [{ poly: [[1536, 450], [1536, 560], [800, 510], [400, 420], [430, 480], [560, 760], [470, 800], [360, 740], [360, 600], [410, 410], [820, 420]], h: 0.4 }, { poly: R(0, 480, 420, 1024), h: 0.75 }, { poly: [[830, 650], [1536, 550], [1536, 650], [845, 730]], h: 0.38 }, { poly: R(0, 0, 1536, 290), h: 1 }] },
+      flood: { base: 0.2, max: 1, blur: 2, zones: [{ poly: [[1536, 430], [1536, 515], [800, 505], [560, 505], [300, 475], [0, 405], [0, 325], [300, 395], [560, 435], [800, 435]], h: 0.4 }, { poly: [[640, 500], [520, 560], [400, 690], [320, 690], [330, 610], [560, 500]], h: 0.42 }, { poly: R(0, 480, 420, 1024), h: 0.75 }, { poly: [[900, 640], [1536, 540], [1536, 610], [900, 700], [740, 700], [740, 640]], h: 0.38 }, { poly: R(0, 0, 1536, 290), h: 1 }] },
       ambience: { river: 0.3 }
     },
     dike: {
@@ -46500,19 +46513,22 @@ void main() {
       ground: "stone",
       scale: { y0: 0.25, s0: 0.75, y1: 0.9, s1: 1.15 },
       walk: [
-        [[60, 300], [520, 318], [900, 400], [1300, 520], [1536, 560], [1536, 650], [1300, 605], [900, 485], [520, 405], [60, 385]],
-        [[250, 520], [390, 500], [400, 390], [260, 395]],
-        [[150, 500], [270, 490], [270, 560], [150, 570]]
+        // 堤顶
+        [[0, 300], [400, 330], [800, 395], [1200, 485], [1536, 520], [1536, 625], [1200, 575], [800, 470], [400, 405], [0, 375]],
+        // 石阶下村
+        [[300, 370], [400, 400], [330, 500], [230, 520]],
+        // 堤脚小路
+        [[90, 505], [330, 490], [330, 560], [90, 585]]
       ],
-      block: [[[540, 320], [620, 320], [620, 400], [540, 400]]],
+      block: [R(530, 320, 600, 400)],
       exits: [
-        { to: "village", poly: R(150, 520, 270, 575), at: [1030, 215], face: [0, 1] },
-        { to: "sluice", poly: R(1460, 560, 1536, 655), at: [120, 250], face: [1, 0] }
+        { to: "village", poly: R(90, 505, 170, 585), at: [1060, 215], face: [0, 1] },
+        { to: "sluice", poly: R(1460, 525, 1536, 625), at: [120, 250], face: [1, 0] }
       ],
-      hides: [R(380, 330, 560, 420), R(1050, 480, 1200, 580), R(0, 300, 120, 400)],
-      spots: { enter: [330, 470], top: [600, 420], hut: [650, 420], east: [1200, 560], west: [200, 345], willow1: [470, 360], willow2: [1120, 520], watch: [1350, 590] },
+      hides: [R(380, 230, 560, 330), R(1050, 400, 1250, 560), R(0, 230, 120, 320)],
+      spots: { enter: [330, 430], top: [600, 440], hut: [650, 440], east: [1200, 545], west: [200, 345], willow1: [470, 365], willow2: [1120, 520], watch: [1350, 590] },
       lights: [{ x: 585, y: 345, r: 100, color: 16752704, a: 0.6, g: 8 }, { x: 1440, y: 520, r: 110, color: 16752704, a: 0.6, g: 8 }],
-      flood: { base: 0.55, max: 1, blur: 3, zones: [{ poly: [[0, 290], [520, 310], [900, 395], [1536, 550], [1536, 660], [1300, 615], [900, 495], [520, 415], [0, 400]], h: 0.98 }, { poly: R(0, 0, 1536, 300), h: 1 }, { poly: [[0, 580], [600, 620], [1536, 760], [1536, 1024], [0, 1024]], h: 0.35 }] },
+      flood: { base: 0.55, max: 1, blur: 3, zones: [{ poly: [[0, 290], [400, 320], [800, 385], [1200, 475], [1536, 510], [1536, 635], [1200, 585], [800, 480], [400, 415], [0, 385]], h: 0.98 }, { poly: R(0, 0, 1536, 300), h: 1 }, { poly: [[0, 580], [600, 620], [1536, 760], [1536, 1024], [0, 1024]], h: 0.35 }] },
       ambience: { river: 1 }
     },
     sluice: {
@@ -46801,10 +46817,11 @@ void main() {
       this.root.innerHTML = `
       <div id="hud" style="display:none">
         <div class="hud-time"><div class="day">\u7AEF\u5348\u524D\u4E09\u65E5</div><div class="clock"><div class="sc">\u8FB0\u65F6<small></small></div><div class="place">\u6DF3\u5B89</div><div class="incense"><i></i></div></div></div>
-        <div class="hud-right"><button data-act="journal">\u8D26\u7C3F<span class="k">J</span></button><button data-act="map">\u8206\u56FE<span class="k">M</span></button><button data-act="menu">\u5377\u5B97<span class="k">Esc</span></button></div>
+        <div class="hud-right"><button data-act="auto" class="auto">\u81EA\u52A8\u8D76\u8DEF<span class="k">T</span></button><button data-act="journal">\u8D26\u7C3F<span class="k">J</span></button><button data-act="map">\u8206\u56FE<span class="k">M</span></button><button data-act="menu">\u5377\u5B97<span class="k">Esc</span></button></div>
         <div class="hud-quests"></div>
         <div class="hud-stats"></div>
-        <div class="hud-hint"><kbd>WASD</kbd>\u8D70 <kbd>Shift</kbd>\u8DD1 <kbd>C</kbd>\u6F5C\u884C <kbd>\u7A7A\u683C</kbd>\u4E92\u52A8 <kbd>\u6EDA\u8F6E</kbd>\u8FDC\u8FD1 <kbd>M</kbd>\u8206\u56FE <kbd>J</kbd>\u8D26\u7C3F</div>
+        <div id="autostate"></div>
+        <div class="hud-hint"><kbd>WASD</kbd>\u8D70 <kbd>Shift</kbd>\u8DD1 <kbd>C</kbd>\u6F5C\u884C <kbd>\u7A7A\u683C</kbd>\u4E92\u52A8 <kbd>\u6EDA\u8F6E</kbd>\u8FDC\u8FD1 <kbd>M</kbd>\u8206\u56FE <kbd>J</kbd>\u8D26\u7C3F <kbd>T</kbd>\u81EA\u52A8\u8D76\u8DEF</div>
         <div id="prompt"><div class="name"></div><div class="key">\u4E92\u52A8</div></div>
         <div id="qmark"><div class="qm-title"></div><div class="qm-dia">\u25C6</div></div>
         <div id="qarrow"><div class="qa-body"><span class="qa-t"></span><span class="qa-d"></span></div><div class="qa-tip"></div></div>
@@ -46838,6 +46855,7 @@ void main() {
         if (b.dataset.act === "journal") this.openJournal();
         if (b.dataset.act === "menu") this.openMenu();
         if (b.dataset.act === "map") this.toggleBigMap();
+        if (b.dataset.act === "auto") this.g.toggleAuto();
       });
       window.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
@@ -47064,6 +47082,13 @@ void main() {
       ctx.fillStyle = "#fff";
       ctx.fillText(`${(sp.x / v.k).toFixed(0)}, ${(sp.y / v.k).toFixed(0)}  walk=${v.nav.walkable(sp.x, sp.y)} elev=${v.elevAt(sp.x, sp.y).toFixed(2)}`, m.x + 12, m.y + 20);
       if (g.player) ctx.fillText(`player ${(g.player.x / v.k).toFixed(0)},${(g.player.y / v.k).toFixed(0)} depth ${g.player.depth.toFixed(2)}`, 20, c.height - 60);
+    }
+    setAuto(on, state) {
+      const b = this.$(".hud-right .auto");
+      b.classList.toggle("on", on);
+      const s = this.$("#autostate");
+      s.classList.toggle("show", on);
+      s.innerHTML = on ? `<i></i>\u81EA\u52A8\u8D76\u8DEF \xB7 ${state || ""}` : "";
     }
     setStats(list) {
       this.$(".hud-stats").innerHTML = list.map((s) => `<div class="st ${s.red ? "red" : ""}">${s.k}<b>${s.v}</b></div>`).join("");
@@ -47432,7 +47457,7 @@ void main() {
       <label><input type="checkbox" data-s="music" ${s.music ? "checked" : ""}> \u914D\u4E50</label>
       <label>\u97F3\u91CF <input type="range" min="0" max="1" step="0.05" value="${s.volume}" data-s="volume"></label>
       <label>\u6587\u5B57\u901F\u5EA6 <input type="range" min="0.5" max="3" step="0.25" value="${s.textSpeed}" data-s="textSpeed"></label>
-      <h3>\u64CD\u4F5C</h3>WASD / \u65B9\u5411\u952E \u8D70\u3000Shift \u8DD1\u3000C \u6F5C\u884C\u3000\u7A7A\u683C \u4E92\u52A8\u3000\u6EDA\u8F6E \u8FDC\u8FD1\u3000J \u8D26\u7C3F\u3000M \u8206\u56FE\u3000G \u9E23\u9523\uFF08\u6709\u9523\u65F6\uFF09`;
+      <h3>\u64CD\u4F5C</h3>WASD / \u65B9\u5411\u952E \u8D70\u3000Shift \u8DD1\u3000C \u6F5C\u884C\u3000\u7A7A\u683C \u4E92\u52A8\u3000\u6EDA\u8F6E \u8FDC\u8FD1\u3000J \u8D26\u7C3F\u3000M \u8206\u56FE\u3000T \u81EA\u52A8\u8D76\u8DEF\uFF08\u671D\u8981\u4E8B\u76EE\u6807\u8D70\uFF09\u3000G \u9E23\u9523\uFF08\u6709\u9523\u65F6\uFF09`;
       const p = this.showPanel("\u5377\u5B97", html);
       p.querySelector("[data-a=save]").onclick = () => {
         g.save();
@@ -48140,10 +48165,10 @@ void main() {
   function setupDay1(d, loaded) {
     const g = d.g, st = g.state;
     if (!st.has("tamiao")) {
-      const ma = d.place("maningyuan", ["fields", 1e3, 500], { face: [0, 1] });
+      const ma = d.place("maningyuan", ["fields", 1e3, 492], { face: [0, 1] });
       const jiang = d.place("jiangqianhu", ["fields", 1060, 506], { face: [0, 1], look: "jiangqianhu" });
       const soldiers = [];
-      for (let i = 0; i < 5; i++) soldiers.push(d.place("sold" + i, ["fields", 930 + i * 38, 548 + i % 2 * 14], { look: "soldier", name: "\u53F7\u8863\u5175" }));
+      for (let i = 0; i < 5; i++) soldiers.push(d.place("sold" + i, ["fields", 930 + i * 38, 545 + i % 2 * 14], { look: "soldier", name: "\u53F7\u8863\u5175" }));
       const feng = d.npc("fenglaosi"), ayang = d.npc("ayang"), qi = d.npc("qidazhu");
       d.move(feng, ["fields", 1085, 578]);
       feng.ai = null;
@@ -48152,7 +48177,7 @@ void main() {
       d.move(qi, ["fields", 1150, 548]);
       qi.ai = null;
       qi.facing.set(-1, -0.3);
-      d.trigger("tamiao", ["fields", 1080, 510], 170, async () => {
+      d.trigger("tamiao", ["fields", 1100, 495], 170, async () => {
         g.player.locked = true;
         await d.lookAt(["fields", 1030, 540], 0.8);
         g.audio.setMood("tense");
@@ -48175,7 +48200,7 @@ void main() {
         st.set("tamiao", a);
         st.flag("tamiao");
         if (a === "stall") {
-          const p = d.pos(["fields", 1e3, 470]);
+          const p = d.pos(["fields", 1e3, 480]);
           g.player.goTo(p.x, p.y);
           await waitUntil(() => !g.player.path, 4e3);
           await d.say("player", "\u6237\u90E8\u5949\u65E8\u6838\u7B97\u7530\u4EA9\u3002\u8FD9\u4E00\u7247\u7530\u7684\u4EA9\u6570\u3001\u7B49\u5219\u3001\u4E1A\u4E3B\uFF0C\u90FD\u8FD8\u6CA1\u6709\u6838\u6E05\u3002\u82D7\u4E00\u8E0F\uFF0C\u7530\u7684\u7B49\u5219\u5C31\u53D8\u4E86\uFF0C\u8D26\u5C31\u6CA1\u6CD5\u6838\u4E86\u3002\u9A6C\u5E9C\u53F0\uFF0C\u7B49\u4E0B\u5B98\u6838\u5B8C\u4E86\uFF0C\u518D\u8E0F\u4E0D\u8FDF\u3002");
@@ -48202,7 +48227,7 @@ void main() {
           st.set("trust", 0);
         }
         d.ledger("jiang_face", "\u88AB\u63E1", "\u848B\u5343\u6237", "\u8E0F\u82D7\u90A3\u5929\uFF0C\u4ED6\u5728\u9A6C\u5B81\u8FDC\u8EAB\u540E\uFF0C\u628A\u4F60\u7684\u8138\u770B\u4E86\u5F88\u4E45\u3002");
-        const out = d.pos(["fields", 1500, 505]);
+        const out = d.pos(["fields", 1500, 478]);
         for (const e of [ma, jiang, ...soldiers]) {
           e.ai = null;
           e.goTo(out.x, out.y, () => {
@@ -48242,9 +48267,9 @@ void main() {
         await d.say("laohegong", "[[\u6C5B\u671F\u653E\u5047\uFF1F::\u6C5B\u671F\uFF0C\u6B63\u662F\u5824\u4E0A\u8981\u4EBA\u7684\u65F6\u5019\u3002::c_holiday]]\u6211\u5B88\u4E86\u4E00\u8F88\u5B50\u5824\uFF0C\u6CA1\u542C\u8BF4\u8FC7\uFF01");
         await d.say("chaiyi", "\u8001\u5434\u5934\uFF0C\u53BF\u592A\u7237\u7684\u4EE4\uFF0C\u4F60\u8DDF\u6211\u56B7\u6709\u4EC0\u4E48\u7528\uFF1F");
         d.clue("c_holiday");
-        const out = d.pos(["village", 1390, 720]);
+        const out = d.pos(["village", 1500, 830]);
         cy.goTo(out.x, out.y, () => cy.visible = false);
-        const n = d.pos(["village", 1030, 200]);
+        const n = d.pos(["village", 1070, 200]);
         h.goTo(n.x, n.y, () => {
           d.move(h, "dike.top");
           h.ai = null;
@@ -49993,6 +50018,9 @@ void main() {
       this.lightsOn = 0;
       this.cinematicCam = false;
       this.switching = false;
+      this.autoWalk = false;
+      this.autoT = 0;
+      this.autoState = "";
     }
     // ───── 场景 ─────
     async goScene(id, x, y, { snap = true, fade = true } = {}) {
@@ -50023,6 +50051,8 @@ void main() {
           this.player.y = w[1];
         }
         this.player.path = null;
+        this.player.autoPath = false;
+        this.autoT = 0;
         this.player.moving = false;
         for (const f of this.director.followers) {
           if (f.dead || f.arrived) continue;
@@ -50171,6 +50201,7 @@ void main() {
           else {
             const tgt = this.view.nav.nearestWalkable(pt.x, pt.y, 400);
             if (tgt) {
+              if (this.autoWalk) this.toggleAuto(false);
               p.goTo(tgt[0], tgt[1]);
               this.ui.clickMarker(tgt[0], tgt[1]);
             }
@@ -50187,12 +50218,71 @@ void main() {
         if (tgt) this.director.interact(tgt);
       }
       if (inp.hit("g")) this.director.useGong();
+      if (inp.hit("t")) this.toggleAuto();
+      if (this.autoWalk) this.autoStep(dt, !!(dx || dz));
       const ex = this.view.exitAt(p.x, p.y);
       if (!ex) this.exitArmed = true;
       else if (this.exitArmed && !this.director.busy && !this.director.exitsLocked) {
         this.exitArmed = false;
         this.useExit(ex);
       }
+    }
+    toggleAuto(force) {
+      this.autoWalk = force != null ? force : !this.autoWalk;
+      this.autoT = 0;
+      this.autoState = this.autoWalk ? "\u5BFB\u8DEF\u4E2D" : "";
+      if (!this.autoWalk && this.player && this.player.autoPath) {
+        this.player.path = null;
+        this.player.autoPath = false;
+      }
+      this.ui.toast(this.autoWalk ? "<b>\u81EA\u52A8\u8D76\u8DEF</b>\u671D\u8981\u4E8B\u76EE\u6807\u8D70\u3002\u6309 T \u6216\u4EFB\u610F\u65B9\u5411\u952E\u505C\u4E0B" : "\u81EA\u52A8\u8D76\u8DEF \u5173", this.autoWalk ? "dark" : "");
+      this.ui.setAuto(this.autoWalk, this.autoState);
+    }
+    // 自动赶路：每隔一会儿朝追踪的要事目标寻路；到了就停
+    autoStep(dt, manual) {
+      const p = this.player, d = this.director;
+      if (manual) {
+        this.toggleAuto(false);
+        return;
+      }
+      if (d.busy || this.ui.modal) return;
+      this.autoT -= dt;
+      if (this.autoT > 0 && p.path) return;
+      this.autoT = 0.8;
+      const q = d.trackedQuest();
+      const t = q && d.resolveTarget(q.target);
+      if (!t) {
+        this.autoState = "\u6CA1\u6709\u8981\u4E8B\u76EE\u6807";
+        this.ui.setAuto(true, this.autoState);
+        p.path = null;
+        return;
+      }
+      const reach = this.view.charH(p.y) * (t.far ? 0.3 : 0.6);
+      if (!t.far && Math.hypot(t.x - p.x, (t.y - p.y) * 1.3) < reach) {
+        this.autoState = "\u5DF2\u5230\uFF1A" + q.title;
+        this.ui.setAuto(true, this.autoState);
+        p.path = null;
+        p.moving = false;
+        return;
+      }
+      const tgt = this.view.nav.nearestWalkable(t.x, t.y, 500);
+      if (!tgt) {
+        this.autoState = "\u8FC7\u4E0D\u53BB";
+        this.ui.setAuto(true, this.autoState);
+        return;
+      }
+      if (!p.path || !p.autoPath || Math.hypot(p.autoGoal[0] - tgt[0], p.autoGoal[1] - tgt[1]) > 40) {
+        if (p.goTo(tgt[0], tgt[1])) {
+          p.autoPath = true;
+          p.autoGoal = tgt;
+        } else {
+          this.autoState = "\u8FC7\u4E0D\u53BB";
+          this.ui.setAuto(true, this.autoState);
+          return;
+        }
+      }
+      this.autoState = (t.far ? "\u5F80" + t.via + "\uFF1A" : "\u524D\u5F80\uFF1A") + q.title;
+      this.ui.setAuto(true, this.autoState);
     }
     async useExit(ex) {
       if (ex.cond && !ex.cond(this)) {

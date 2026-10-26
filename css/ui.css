@@ -252,3 +252,8 @@ button { font-family: var(--font); cursor: pointer; }
 #title .t-seal { border-color: #c9a24a; color: #e8c86a; background: rgba(0,0,0,0.45); }
 #title .t-menu button { background: rgba(10,12,16,0.45); border: 1px solid rgba(201,162,74,0.75); color: #f1e8d3; }
 #title .t-menu button:hover { background: rgba(201,162,74,0.9); color: #1d1813; }
+
+.hud-right button.auto.on { background: rgba(201,162,74,0.9); color: #1d1813; border-color: var(--gold); }
+#autostate { position: absolute; left: 50%; top: 18px; transform: translateX(-50%); display: none; align-items: center; gap: 8px; background: rgba(14,12,10,0.7); border: 1px solid rgba(201,162,74,0.7); color: var(--gold); font-size: 14px; letter-spacing: 0.15em; padding: 5px 14px; pointer-events: none; }
+#autostate.show { display: flex; }
+#autostate i { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 8px var(--gold); animation: blink 1s infinite; }
