@@ -43,7 +43,7 @@ export class Game {
     if (this.view) { this.r.scene.remove(this.view.group); this.r.lightScene.remove(this.view.lightGroup); for (const e of this.entities) if (e.scene === from) this.r.scene.remove(e.group); }
     this.sceneId = id; this.view = view; this.r.bounds = [view.W, view.H];
     this.r.scene.add(view.group); this.r.lightScene.add(view.lightGroup);
-    if (this.player) { this.player.scene = id; if (x != null) { this.player.x = x; this.player.y = y; } this.player.path = null; this.player.moving = false; for (const f of this.director.followers) { if (f.dead || f.arrived) continue; f.scene = id; f.x = this.player.x + (Math.random() - 0.5) * 80; f.y = this.player.y + 20 + Math.random() * 30; f.path = null; } }
+    if (this.player) { this.player.scene = id; if (x != null) { const w = view.nav.nearestWalkable(x, y, 600) || [x, y]; this.player.x = w[0]; this.player.y = w[1]; } this.player.path = null; this.player.moving = false; for (const f of this.director.followers) { if (f.dead || f.arrived) continue; f.scene = id; f.x = this.player.x + (Math.random() - 0.5) * 80; f.y = this.player.y + 20 + Math.random() * 30; f.path = null; } }
     for (const e of this.entities) if (e.scene === id) { this.r.scene.add(e.group); e.update(0); }
     view.setLights(this.lightsOn, this.t); this.flood.applyScene(view);
     if (this.player) this.r.follow(this.player.x, this.player.y - view.charH(this.player.y) * 0.4, true);

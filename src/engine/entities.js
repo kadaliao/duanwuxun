@@ -5,13 +5,13 @@ import { loadLook, META } from './sprites.js';
 const SpriteShader = {
   vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
   fragmentShader: `
-    uniform sampler2D map; uniform vec2 uOff, uRep; uniform float uFlip, uSubmerge, uAlpha, uDim; uniform vec3 uTint; varying vec2 vUv;
+    uniform sampler2D map; uniform vec2 uOff, uRep; uniform float uFlip, uSubmerge, uAlpha, uDim; uniform vec3 uTint, uMul; varying vec2 vUv;
     void main(){
       vec2 uv = vUv; if (uFlip > 0.5) uv.x = 1.0 - uv.x;
       if (vUv.y < uSubmerge) discard;
       vec4 c = texture2D(map, uOff + uv * uRep);
       if (c.a < 0.08) discard;
-      c.rgb = mix(c.rgb, c.rgb * uTint, uDim);
+      c.rgb *= uMul; c.rgb = mix(c.rgb, c.rgb * uTint, uDim);
       gl_FragColor = vec4(c.rgb, c.a * uAlpha);
     }`,
 };
@@ -34,7 +34,7 @@ export class Entity {
     this.dir = 0; this.flip = false; this.frame = 0; this.animT = 0; this.moving = false; this.sneak = false;
     this.path = null; this.pathI = 0; this.onArrive = null; this.visible = true; this.locked = false;
     this.depth = 0; this.stepT = 0; this.onStep = null; this.talking = false; this.hidden = false;
-    this.mat = new THREE.ShaderMaterial({ uniforms: { map: { value: null }, uOff: { value: new THREE.Vector2(0, 0) }, uRep: { value: new THREE.Vector2(1, 1) }, uFlip: { value: 0 }, uSubmerge: { value: 0 }, uAlpha: { value: 1 }, uDim: { value: 0 }, uTint: { value: new THREE.Color(0.4, 0.45, 0.6) } }, vertexShader: SpriteShader.vertexShader, fragmentShader: SpriteShader.fragmentShader, transparent: true, depthTest: false, depthWrite: false });
+    this.mat = new THREE.ShaderMaterial({ uniforms: { map: { value: null }, uOff: { value: new THREE.Vector2(0, 0) }, uRep: { value: new THREE.Vector2(1, 1) }, uFlip: { value: 0 }, uSubmerge: { value: 0 }, uAlpha: { value: 1 }, uDim: { value: 0 }, uTint: { value: new THREE.Color(0.4, 0.45, 0.6) }, uMul: { value: new THREE.Color(1, 1, 1) } }, vertexShader: SpriteShader.vertexShader, fragmentShader: SpriteShader.fragmentShader, transparent: true, depthTest: false, depthWrite: false });
     const geo = new THREE.PlaneGeometry(1, 1); geo.translate(0, 0.5, 0);
     this.mesh = new THREE.Mesh(geo, this.mat); this.mesh.userData.entity = this; this.mesh.frustumCulled = false;
     this.ghostMat = this.mat.clone(); this.ghostMat.uniforms = THREE.UniformsUtils.clone(this.mat.uniforms); this.ghostMat.uniforms.uAlpha.value = 0.32;
@@ -43,11 +43,18 @@ export class Entity {
     this.group = new THREE.Group(); this.group.add(this.shadow); this.group.add(this.mesh); this.group.add(this.ghost);
     this.look = META[lookId] || null; this.ready = loadLook(lookId).then(l => { this.look = l; this.mat.uniforms.map.value = l.tex; this.ghostMat.uniforms.map.value = l.tex; });
     if (this.look) { this.mat.uniforms.map.value = this.look.tex; this.ghostMat.uniforms.map.value = this.look.tex; }
-    this.height = 1; this.scaleK = 1;
+    this.height = 1; this.scaleK = 1; this.animDist = 0;
+    // 通用人物：按 id 做一点颜色与身高的差异，免得满村一个样
+    if (/^(villager|townsman|soldier|minzhuang|cunmin|qijun)/.test(lookId) && !opts.noVary) {
+      const h = [...this.id].reduce((n, ch) => n * 31 + ch.charCodeAt(0), 7) >>> 0;
+      const muls = [[1, 1, 1], [1, 0.93, 0.86], [0.88, 0.94, 1], [0.94, 1, 0.9], [0.9, 0.9, 0.9], [1, 0.97, 0.92], [0.92, 0.9, 1]];
+      const m = muls[h % muls.length]; this.mat.uniforms.uMul.value.setRGB(m[0], m[1], m[2]); this.ghostMat.uniforms.uMul.value.setRGB(m[0], m[1], m[2]);
+      this.vary = 0.94 + ((h >> 3) % 7) * 0.02;
+    } else this.vary = 1;
   }
   get sceneView() { return this.g.views[this.scene]; }
   // 身高（场景像素）
-  get h() { const v = this.sceneView; return v ? v.charH(this.y) * (this.opts.scale || 1) : 240; }
+  get h() { const v = this.sceneView; return v ? v.charH(this.y) * (this.opts.scale || 1) * (this.vary || 1) : 240; }
   setFrame(dir, f, flip) {
     const l = this.look; if (!l) return;
     this.mat.uniforms.uOff.value.set(f / l.cols, 1 - (dir + 1) / l.rows); this.mat.uniforms.uRep.value.set(1 / l.cols, 1 / l.rows); this.mat.uniforms.uFlip.value = flip ? 1 : 0;
@@ -71,7 +78,7 @@ export class Entity {
     if (can(nx, this.y)) { this.x = nx; moved = true; }
     if (can(this.x, ny)) { this.y = ny; moved = true; }
     this.moving = moved; this.blocked = !moved;
-    if (moved) { this.stepT += sp * dt / sc; if (this.stepT > 95) { this.stepT = 0; if (this.onStep) this.onStep(this); } }
+    if (moved) { this.animDist += sp * dt / sc; this.stepT += sp * dt / sc; if (this.stepT > 95) { this.stepT = 0; if (this.onStep) this.onStep(this); } }
   }
   canEnter(x, y) { return true; }
   goTo(tx, ty, cb) {
@@ -93,16 +100,16 @@ export class Entity {
   update(dt) {
     const v = this.sceneView; if (!v) return;
     this.depth = this.noWater ? 0 : v.depthAt(this.x, this.y);
-    if (this.moving) { this.animT += dt * (this.sneak ? 6 : 9) * (this.opts.animRate || 1); const nf = (this.look ? this.look.frames : 6) - 1; this.frame = 1 + (Math.floor(this.animT) % Math.max(1, nf)); }
-    else { this.frame = 0; this.animT = 0; }
+    if (this.moving) { const nf = (this.look ? this.look.frames : 6) - 1; this.frame = 1 + (Math.floor(this.animDist / 20) % Math.max(1, nf)); }
+    else { this.frame = 0; this.animDist = 0; }
     this.updateDir(); this.setFrame(this.dir, this.frame, this.flip);
     const h = this.h; const w = h * (this.look ? this.look.cw / this.look.ch : 0.4);
     const feet = this.look ? this.look.feet * h / this.look.ch : 0;
-    const bob = this.moving ? Math.abs(Math.sin(this.animT * Math.PI)) * h * 0.012 : 0;
+    const bob = 0;
     this.mesh.scale.set(w, h, 1); this.mesh.position.set(this.x, -this.y + feet + bob, 0);
     this.ghost.scale.copy(this.mesh.scale); this.ghost.position.copy(this.mesh.position);
     this.mesh.renderOrder = this.y + (this.orderBias || 0); this.ghost.renderOrder = 1e6;
-    this.shadow.scale.set(w * 1.1, w * 0.45, 1); this.shadow.position.set(this.x, -this.y + 2, 0); this.shadow.renderOrder = this.y - 0.5;
+    this.shadow.scale.set(w * 0.9, w * 0.32, 1); this.shadow.position.set(this.x, -this.y + 1, 0); this.shadow.renderOrder = this.y - 0.5;
     const sub = this.noWater ? 0 : Math.min(0.75, this.depth * 0.8); this.mat.uniforms.uSubmerge.value = sub;
     const behind = v.behindOccluder(this.x, this.y);
     this.ghost.visible = this.visible && behind && !!this.opts.ghost;

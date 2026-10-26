@@ -45782,13 +45782,13 @@ void main() {
   var SpriteShader = {
     vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
     fragmentShader: `
-    uniform sampler2D map; uniform vec2 uOff, uRep; uniform float uFlip, uSubmerge, uAlpha, uDim; uniform vec3 uTint; varying vec2 vUv;
+    uniform sampler2D map; uniform vec2 uOff, uRep; uniform float uFlip, uSubmerge, uAlpha, uDim; uniform vec3 uTint, uMul; varying vec2 vUv;
     void main(){
       vec2 uv = vUv; if (uFlip > 0.5) uv.x = 1.0 - uv.x;
       if (vUv.y < uSubmerge) discard;
       vec4 c = texture2D(map, uOff + uv * uRep);
       if (c.a < 0.08) discard;
-      c.rgb = mix(c.rgb, c.rgb * uTint, uDim);
+      c.rgb *= uMul; c.rgb = mix(c.rgb, c.rgb * uTint, uDim);
       gl_FragColor = vec4(c.rgb, c.a * uAlpha);
     }`
   };
@@ -45838,7 +45838,7 @@ void main() {
       this.onStep = null;
       this.talking = false;
       this.hidden = false;
-      this.mat = new ShaderMaterial({ uniforms: { map: { value: null }, uOff: { value: new Vector2(0, 0) }, uRep: { value: new Vector2(1, 1) }, uFlip: { value: 0 }, uSubmerge: { value: 0 }, uAlpha: { value: 1 }, uDim: { value: 0 }, uTint: { value: new Color(0.4, 0.45, 0.6) } }, vertexShader: SpriteShader.vertexShader, fragmentShader: SpriteShader.fragmentShader, transparent: true, depthTest: false, depthWrite: false });
+      this.mat = new ShaderMaterial({ uniforms: { map: { value: null }, uOff: { value: new Vector2(0, 0) }, uRep: { value: new Vector2(1, 1) }, uFlip: { value: 0 }, uSubmerge: { value: 0 }, uAlpha: { value: 1 }, uDim: { value: 0 }, uTint: { value: new Color(0.4, 0.45, 0.6) }, uMul: { value: new Color(1, 1, 1) } }, vertexShader: SpriteShader.vertexShader, fragmentShader: SpriteShader.fragmentShader, transparent: true, depthTest: false, depthWrite: false });
       const geo = new PlaneGeometry(1, 1);
       geo.translate(0, 0.5, 0);
       this.mesh = new Mesh(geo, this.mat);
@@ -45868,6 +45868,15 @@ void main() {
       }
       this.height = 1;
       this.scaleK = 1;
+      this.animDist = 0;
+      if (/^(villager|townsman|soldier|minzhuang|cunmin|qijun)/.test(lookId) && !opts.noVary) {
+        const h = [...this.id].reduce((n, ch) => n * 31 + ch.charCodeAt(0), 7) >>> 0;
+        const muls = [[1, 1, 1], [1, 0.93, 0.86], [0.88, 0.94, 1], [0.94, 1, 0.9], [0.9, 0.9, 0.9], [1, 0.97, 0.92], [0.92, 0.9, 1]];
+        const m = muls[h % muls.length];
+        this.mat.uniforms.uMul.value.setRGB(m[0], m[1], m[2]);
+        this.ghostMat.uniforms.uMul.value.setRGB(m[0], m[1], m[2]);
+        this.vary = 0.94 + (h >> 3) % 7 * 0.02;
+      } else this.vary = 1;
     }
     get sceneView() {
       return this.g.views[this.scene];
@@ -45875,7 +45884,7 @@ void main() {
     // 身高（场景像素）
     get h() {
       const v = this.sceneView;
-      return v ? v.charH(this.y) * (this.opts.scale || 1) : 240;
+      return v ? v.charH(this.y) * (this.opts.scale || 1) * (this.vary || 1) : 240;
     }
     setFrame(dir, f, flip) {
       const l = this.look;
@@ -45926,6 +45935,7 @@ void main() {
       this.moving = moved;
       this.blocked = !moved;
       if (moved) {
+        this.animDist += sp * dt / sc;
         this.stepT += sp * dt / sc;
         if (this.stepT > 95) {
           this.stepT = 0;
@@ -45990,27 +46000,26 @@ void main() {
       if (!v) return;
       this.depth = this.noWater ? 0 : v.depthAt(this.x, this.y);
       if (this.moving) {
-        this.animT += dt * (this.sneak ? 6 : 9) * (this.opts.animRate || 1);
         const nf = (this.look ? this.look.frames : 6) - 1;
-        this.frame = 1 + Math.floor(this.animT) % Math.max(1, nf);
+        this.frame = 1 + Math.floor(this.animDist / 20) % Math.max(1, nf);
       } else {
         this.frame = 0;
-        this.animT = 0;
+        this.animDist = 0;
       }
       this.updateDir();
       this.setFrame(this.dir, this.frame, this.flip);
       const h = this.h;
       const w = h * (this.look ? this.look.cw / this.look.ch : 0.4);
       const feet = this.look ? this.look.feet * h / this.look.ch : 0;
-      const bob = this.moving ? Math.abs(Math.sin(this.animT * Math.PI)) * h * 0.012 : 0;
+      const bob = 0;
       this.mesh.scale.set(w, h, 1);
       this.mesh.position.set(this.x, -this.y + feet + bob, 0);
       this.ghost.scale.copy(this.mesh.scale);
       this.ghost.position.copy(this.mesh.position);
       this.mesh.renderOrder = this.y + (this.orderBias || 0);
       this.ghost.renderOrder = 1e6;
-      this.shadow.scale.set(w * 1.1, w * 0.45, 1);
-      this.shadow.position.set(this.x, -this.y + 2, 0);
+      this.shadow.scale.set(w * 0.9, w * 0.32, 1);
+      this.shadow.position.set(this.x, -this.y + 1, 0);
       this.shadow.renderOrder = this.y - 0.5;
       const sub = this.noWater ? 0 : Math.min(0.75, this.depth * 0.8);
       this.mat.uniforms.uSubmerge.value = sub;
@@ -46459,7 +46468,7 @@ void main() {
       ],
       occluders: [{ poly: [[150, 560], [330, 540], [420, 600], [400, 700], [300, 740], [170, 700]], base: 780 }],
       exits: [
-        { to: "town", poly: R(1490, 455, 1536, 560), at: [120, 640], face: [1, 0] },
+        { to: "town", poly: R(1490, 455, 1536, 560), at: [110, 900], face: [1, 0] },
         { to: "village", poly: R(380, 700, 480, 800), at: [1330, 715], face: [-1, 0] },
         { to: "sluice", poly: R(690, 240, 770, 300), at: [420, 930], face: [0, -1] }
       ],
@@ -46538,7 +46547,7 @@ void main() {
       block: [R(740, 470, 840, 560), R(430, 440, 560, 540)],
       occluders: [{ poly: R(430, 400, 600, 530), base: 530 }, { poly: [[930, 500], [1100, 500], [1120, 700], [930, 720]], base: 720 }],
       exits: [
-        { to: "town", poly: R(1280, 860, 1536, 1e3), at: [1180, 180], face: [0, 1] },
+        { to: "town", poly: R(1280, 860, 1536, 1e3), at: [1185, 345], face: [0, 1] },
         { to: "sluice", poly: R(300, 700, 335, 1e3), at: [1470, 330], face: [1, 0] }
       ],
       spots: { enter: [1200, 820], landing: [780, 580], pierEnd: [930, 230], hut: [610, 530], qian: [640, 540], boatman: [800, 440], boats: [880, 300], lower: [800, 850] },
@@ -46560,9 +46569,9 @@ void main() {
         [[660, 715], [840, 715], [825, 985], [675, 985]]
       ],
       block: [R(280, 430, 380, 520), R(1120, 430, 1230, 520), R(990, 340, 1080, 470), R(1140, 520, 1290, 640), R(380, 300, 560, 420)],
-      occluders: [{ poly: [[440, 590], [1060, 590], [1060, 765], [440, 765]], base: 765 }, { poly: [[250, 150], [380, 150], [390, 520], [260, 520]], base: 520 }, { poly: [[1120, 160], [1250, 160], [1260, 520], [1120, 520]], base: 520 }],
-      exits: [{ to: "town", poly: R(660, 950, 840, 1e3), at: [1e3, 230], face: [0, 1] }],
-      spots: { enter: [750, 900], hall: [780, 345], inside: [780, 440], gate: [750, 800], gong: [460, 440], drum: [530, 440], court: [780, 600], lionL: [500, 870], lionR: [1e3, 870] },
+      occluders: [{ poly: [[440, 590], [1060, 590], [1060, 765], [440, 765]], base: 885 }, { poly: [[250, 150], [380, 150], [390, 520], [260, 520]], base: 520 }, { poly: [[1120, 160], [1250, 160], [1260, 520], [1120, 520]], base: 520 }],
+      exits: [{ to: "town", poly: R(660, 950, 840, 1e3), at: [700, 240], face: [0, 1] }],
+      spots: { enter: [750, 930], hall: [780, 345], inside: [780, 440], gate: [705, 850], gong: [460, 440], drum: [530, 440], court: [780, 600], lionL: [500, 870], lionR: [1e3, 870] },
       lights: [{ x: 545, y: 275, r: 130, color: 16752704, g: 10 }, { x: 800, y: 270, r: 140, color: 16756816, g: 12 }, { x: 930, y: 270, r: 130, color: 16752704, g: 10 }, { x: 440, y: 860, r: 100, color: 16752704, g: 9 }, { x: 1050, y: 860, r: 100, color: 16752704, g: 9 }],
       flood: { base: 0.7, max: 1, offset: 0.3 },
       ambience: { river: 0 }
@@ -49995,8 +50004,9 @@ void main() {
       if (this.player) {
         this.player.scene = id;
         if (x != null) {
-          this.player.x = x;
-          this.player.y = y;
+          const w = view.nav.nearestWalkable(x, y, 600) || [x, y];
+          this.player.x = w[0];
+          this.player.y = w[1];
         }
         this.player.path = null;
         this.player.moving = false;
