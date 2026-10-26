@@ -46003,7 +46003,7 @@ void main() {
       let mirror = false;
       if (this.moving) {
         const nf = Math.max(1, (this.look ? this.look.frames : 6) - 1);
-        const k = Math.floor(this.animDist / 18);
+        const k = Math.floor(this.animDist / 16);
         if (this.dir === 2 || this.look && this.look.sideCycle) {
           const cyc = this.look && this.look.sideCycle ? this.look.sideCycle : null;
           if (cyc) this.frame = cyc[k % cyc.length];
@@ -46013,9 +46013,10 @@ void main() {
             this.frame = 1 + (i < nf ? i : n - i);
           }
         } else {
-          const i = k % (nf * 2);
-          this.frame = 1 + i % nf;
-          mirror = i >= nf;
+          const cyc = this.look && this.look.frontCycle ? this.look.frontCycle : [[2, 0], [3, 0], [0, 0], [2, 1], [3, 1], [0, 1]];
+          const c = cyc[k % cyc.length];
+          this.frame = Math.min(c[0], nf);
+          mirror = !!c[1];
         }
       } else {
         this.frame = 0;

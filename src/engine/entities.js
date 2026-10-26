@@ -103,12 +103,12 @@ export class Entity {
     this.updateDir();
     let mirror = false;
     if (this.moving) {
-      const nf = Math.max(1, (this.look ? this.look.frames : 6) - 1); const k = Math.floor(this.animDist / 18);
+      const nf = Math.max(1, (this.look ? this.look.frames : 6) - 1); const k = Math.floor(this.animDist / 16);
       if (this.dir === 2 || (this.look && this.look.sideCycle)) { // 侧面：来回（图集里每帧都是同一条腿在前）
         const cyc = this.look && this.look.sideCycle ? this.look.sideCycle : null;
         if (cyc) this.frame = cyc[k % cyc.length]; else { const n = nf * 2 - 2; const i = k % n; this.frame = 1 + (i < nf ? i : n - i); }
-      } else { // 正面/背面：一遍正的、一遍镜像的，两条腿就交替了
-        const i = k % (nf * 2); this.frame = 1 + (i % nf); mirror = i >= nf;
+      } else { // 正面/背面：抬腿帧 → 落地帧 → 并腿（站姿）→ 镜像抬腿 → 镜像落地 → 并腿：两条腿明确交替
+        const cyc = this.look && this.look.frontCycle ? this.look.frontCycle : [[2, 0], [3, 0], [0, 0], [2, 1], [3, 1], [0, 1]]; const c = cyc[k % cyc.length]; this.frame = Math.min(c[0], nf); mirror = !!c[1];
       }
     } else { this.frame = 0; this.animDist = 0; }
     this.setFrame(this.dir, this.frame, this.flip !== mirror);
